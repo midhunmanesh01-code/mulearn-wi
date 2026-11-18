@@ -31,6 +31,7 @@ import {
 import { Navbar } from '@/components/Navbar'
 import { Preloader } from '@/components/Preloader'
 import { ScrollRail } from '@/components/ScrollRail'
+import { SectionDivider } from '@/components/SectionDivider'
 import { FlickerNumber } from '@/components/FlickerNumber'
 import { SplitText } from '@/components/SplitText'
 
@@ -313,15 +314,15 @@ const TICKER = [
 const Marquee: React.FC = () => {
   const doubled = [...TICKER, ...TICKER]
   return (
-    <div className="border-y border-black/[0.08] overflow-hidden py-4 select-none bg-white">
+    <div className="border-y-2 border-black/15 overflow-hidden py-3.5 select-none bg-[#111110] text-[#FAFAF8] shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative z-20">
       <div className="marquee-track">
         {doubled.map((item, i) => (
           <span
             key={i}
-            className="font-mono text-xs font-medium tracking-[0.16em] text-[#111110]/75 uppercase px-6 whitespace-nowrap flex items-center"
+            className="font-mono text-xs font-semibold tracking-[0.18em] text-white/90 uppercase px-6 whitespace-nowrap flex items-center"
           >
             {item}
-            <span className="ml-6 inline-block w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/10 shrink-0" />
+            <span className="ml-6 inline-block w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/30 shrink-0 shadow-[0_0_6px_#BEFF62]" />
           </span>
         ))}
       </div>
@@ -439,7 +440,13 @@ const PeerLearningLoop: React.FC = () => {
 }
 
 const Community: React.FC = () => (
-  <section id="about" className="bg-[#FAFAF8] border-b border-black/[0.06]">
+  <section id="about" className="bg-[#FAFAF8] border-b border-black/10 relative">
+    <SectionDivider
+      code="01"
+      title="ETHOS & MANIFESTO"
+      tagline="THE ARCHITECTURE OF LEARNING"
+      meta="CEC CHAPTER"
+    />
     <div className="mx-auto max-w-6xl px-6 sm:px-10 py-20 sm:py-28">
       {/* Top Header Grid */}
       <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 items-start">
@@ -635,7 +642,13 @@ const Circles: React.FC = () => {
   }
 
   return (
-    <section id="circles" className="bg-[#FAFAF8] border-b border-black/[0.08] relative">
+    <section id="circles" className="bg-white border-b border-black/10 relative">
+      <SectionDivider
+        code="02"
+        title="STUDENT GUILDS"
+        tagline="CHOOSE YOUR CRAFT"
+        meta="04 COHORTS"
+      />
       <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
         {/* Header */}
         <FadeIn className="mb-14 sm:mb-16">
@@ -910,7 +923,13 @@ const Circles: React.FC = () => {
 
 // ─── Karma / Proof of Work ────────────────────────────────────────────────────
 const Karma: React.FC = () => (
-  <section id="karma" className="bg-[#FAFAF8] border-b border-black/[0.08] relative overflow-hidden">
+  <section id="karma" className="bg-[#FAFAF8] border-b border-black/10 relative overflow-hidden">
+    <SectionDivider
+      code="03"
+      title="PROOF OF WORK"
+      tagline="THE KARMA SYSTEM"
+      meta="VERIFIED LEDGER"
+    />
     <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
       {/* Top Grid: Editorial Manifesto + The Physical Karma Passport */}
       <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-start">
@@ -1113,8 +1132,14 @@ const Moments: React.FC = () => {
   const icons = [Calendar, Users, Zap, Star]
 
   return (
-    <section id="moments" className="bg-white border-y border-black/[0.06]">
-      <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24">
+    <section id="moments" className="bg-white border-b border-black/10 relative">
+      <SectionDivider
+        code="04"
+        title="COMMUNITY ARCHIVE"
+        tagline="FIELD NOTES & DISPATCHES"
+        meta="MOMENTS '25"
+      />
+      <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-28">
         <FadeIn className="mb-14">
           <Label>Community Moments</Label>
           <h2 className="font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-[#111110]">
@@ -1160,8 +1185,14 @@ const Moments: React.FC = () => {
 
 // ─── Events ───────────────────────────────────────────────────────────────────
 const Events: React.FC = () => (
-  <section id="events" className="bg-[#FAFAF8]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
+  <section id="events" className="bg-[#FAFAF8] border-b border-black/10 relative">
+    <SectionDivider
+      code="05"
+      title="SPRINT TIMELINE"
+      tagline="ANNUAL CALENDAR"
+      meta={`${events.length} SESSIONS`}
+    />
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
       <FadeIn className="mb-14">
         <Label>Events · 2025</Label>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -1199,7 +1230,13 @@ const Events: React.FC = () => (
 
 // ─── Join CTA ──────────────────────────────────────────────────────────────────
 const Join: React.FC = () => (
-  <section id="join" className="bg-[#FAFAF8] border-b border-black/[0.08] relative">
+  <section id="join" className="bg-[#F4F4F1] border-b border-black/15 relative">
+    <SectionDivider
+      code="06"
+      title="CHAPTER INDUCTION"
+      tagline="CLAIM BUILDER PASS"
+      meta="ENROLLMENT OPEN"
+    />
     <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
       <FadeIn>
         {/* Physical Boarding Pass Card */}
@@ -1673,7 +1710,7 @@ const Footer: React.FC = () => {
               <Heart className="w-3.5 h-3.5 text-[#BEFF62] fill-[#BEFF62] inline shrink-0" role="img" aria-label="love" />
               <span>by</span>
               <span className="text-white/70 font-medium hover:text-[#BEFF62] transition-colors">
-                CEC Builders
+                Midhun Manesh 
               </span>
             </span>
 

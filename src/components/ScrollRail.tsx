@@ -8,7 +8,7 @@ const SECTIONS = [
   { id: 'karma', label: 'Karma', tag: '03' },
   { id: 'moments', label: 'Moments', tag: '04' },
   { id: 'events', label: 'Timeline', tag: '05' },
-  { id: 'join', label: 'Join Pass', tag: '06' },
+  { id: 'join', label: 'Induction', tag: '06' },
 ]
 
 export const ScrollRail: React.FC = () => {
