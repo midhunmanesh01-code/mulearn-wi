@@ -5,6 +5,7 @@ import { ArrowUpRight, ExternalLink, ArrowRight, Zap, Users, Calendar, Star } fr
 import { chapter, stats, circles, events, pillars, karmaSteps, communityMoments } from '@/config/content'
 import { Navbar } from '@/components/Navbar'
 import { FlickerNumber } from '@/components/FlickerNumber'
+import { SplitText } from '@/components/SplitText'
 
 // ─── Scroll-reveal wrapper ─────────────────────────────────────────────────────
 const FadeIn: React.FC<{
@@ -67,27 +68,87 @@ const Hero: React.FC = () => (
           </span>
         </motion.div>
 
-        {/* Headline — massive serif */}
-        <div className="overflow-hidden mb-1">
-          <motion.h1
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.95, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight text-[#111110]"
-          >
-            Break the syllabus.
-          </motion.h1>
-        </div>
-        <div className="overflow-hidden">
-          <motion.h1
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.95, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif italic text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight text-[#111110]/25"
-          >
-            Ship in public.
-          </motion.h1>
-        </div>
+        {/* Headline — massive serif with isolated word-by-word fluid wave lift */}
+        <h1 className="font-serif text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight mb-2 select-none">
+          {/* First line: Break the syllabus. */}
+          <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pb-1">
+            <SplitText
+              tag="span"
+              text="Break"
+              className="text-[#111110] inline-block"
+              effect="rise"
+              splitType="chars"
+              delay={35}
+              duration={0.9}
+              trigger="load"
+              hoverEffect="lift"
+            />
+            <SplitText
+              tag="span"
+              text="the"
+              className="text-[#111110] inline-block"
+              effect="rise"
+              splitType="chars"
+              delay={35}
+              duration={0.9}
+              startDelay={80}
+              trigger="load"
+              hoverEffect="lift"
+            />
+            <SplitText
+              tag="span"
+              text="syllabus."
+              className="text-[#111110] inline-block"
+              effect="rise"
+              splitType="chars"
+              delay={35}
+              duration={0.9}
+              startDelay={160}
+              trigger="load"
+              hoverEffect="lift"
+            />
+          </div>
+
+          {/* Second line: Ship in public. (Natural muted tone, stays in its tone on hover) */}
+          <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pt-1 italic text-[#111110]/25">
+            <SplitText
+              tag="span"
+              text="Ship"
+              className="text-[#111110]/25 inline-block"
+              effect="rise"
+              splitType="chars"
+              delay={35}
+              duration={0.9}
+              startDelay={240}
+              trigger="load"
+              hoverEffect="lift"
+            />
+            <SplitText
+              tag="span"
+              text="in"
+              className="text-[#111110]/25 inline-block"
+              effect="rise"
+              splitType="chars"
+              delay={35}
+              duration={0.9}
+              startDelay={300}
+              trigger="load"
+              hoverEffect="lift"
+            />
+            <SplitText
+              tag="span"
+              text="public."
+              className="text-[#111110]/25 inline-block"
+              effect="rise"
+              splitType="chars"
+              delay={35}
+              duration={0.9}
+              startDelay={360}
+              trigger="load"
+              hoverEffect="lift"
+            />
+          </div>
+        </h1>
 
         {/* Lime highlight bar under first line */}
         <motion.div
@@ -133,28 +194,28 @@ const Hero: React.FC = () => (
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="mt-20 sm:mt-26"
+        className="mt-14 sm:mt-18"
       >
-        <div className="border-t border-black/[0.07] pt-10 sm:pt-14">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-10 sm:gap-x-14 lg:gap-x-20">
+        <div className="border-t border-black/[0.07] pt-8 sm:pt-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-8 sm:gap-x-12 lg:gap-x-16">
             {stats.map((s, idx) => (
               <div key={s.label} className="group">
-                {/* Big bold number in Hero serif */}
+                {/* Number in Hero serif */}
                 <div>
                   <FlickerNumber
                     value={s.value}
                     delay={idx * 50}
-                    className="font-serif text-[3.25rem] sm:text-[4.25rem] lg:text-[5rem] font-normal tracking-tight leading-[0.88] text-[#111110]"
+                    className="font-serif text-[2.6rem] sm:text-[3.25rem] lg:text-[3.75rem] font-normal tracking-tight leading-[0.9] text-[#111110]"
                   />
                 </div>
 
                 {/* Label in Hero serif */}
-                <h4 className="font-serif text-2xl sm:text-[1.65rem] text-[#111110] tracking-tight leading-snug mt-3.5">
+                <h4 className="font-serif text-lg sm:text-xl text-[#111110] tracking-tight leading-snug mt-2.5">
                   {s.label}
                 </h4>
 
                 {/* Subtitle in clean light sans */}
-                <p className="font-sans text-xs sm:text-sm text-[#3A3A37]/55 mt-1 leading-normal font-normal">
+                <p className="font-sans text-[11px] sm:text-xs text-[#3A3A37]/55 mt-0.5 leading-normal font-normal">
                   {s.sub}
                 </p>
               </div>

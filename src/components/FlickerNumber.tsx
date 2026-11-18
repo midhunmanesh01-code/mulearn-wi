@@ -1,135 +1,118 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useInView } from 'motion/react'
+import React, { useRef, useState } from 'react'
+import { motion, useInView } from 'motion/react'
 
-const DIGITS = '0123456789'
-
-interface FlickerNumberProps {
+interface RollingNumberProps {
   value: string
   className?: string
   delay?: number
-  duration?: number
 }
 
-export const FlickerNumber: React.FC<FlickerNumberProps> = ({
+// Single digit rolling slot column
+const DigitColumn: React.FC<{
+  target: number
+  inView: boolean
+  colIndex: number
+  spinKey: number
+}> = ({ target, inView, colIndex, spinKey }) => {
+  const prefersReduced =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  // 2 full cycles of 0-9 before landing on the target number
+  const cycles = 2
+  const digitsList: number[] = []
+  for (let c = 0; c < cycles; c++) {
+    for (let d = 0; d < 10; d++) {
+      digitsList.push(d)
+    }
+  }
+  for (let d = 0; d <= target; d++) {
+    digitsList.push(d)
+  }
+
+  const targetIndex = cycles * 10 + target
+  const total = digitsList.length
+
+  if (prefersReduced) {
+    return (
+      <span className="inline-block h-[1.12em] overflow-hidden align-top select-none">
+        <span className="h-[1.12em] flex items-center justify-center leading-none">
+          {target}
+        </span>
+      </span>
+    )
+  }
+
+  return (
+    <span className="inline-block h-[1.12em] overflow-hidden align-top select-none">
+      <motion.span
+        key={spinKey}
+        initial={{ y: '0%' }}
+        animate={inView ? { y: `-${(targetIndex / total) * 100}%` } : { y: '0%' }}
+        transition={{
+          duration: 1.05 + colIndex * 0.1,
+          ease: [0.16, 1, 0.3, 1], // Silky smooth deceleration curve
+        }}
+        className="flex flex-col will-change-transform"
+      >
+        {digitsList.map((num, i) => (
+          <span
+            key={i}
+            className="h-[1.12em] flex items-center justify-center leading-none"
+          >
+            {num}
+          </span>
+        ))}
+      </motion.span>
+    </span>
+  )
+}
+
+export const FlickerNumber: React.FC<RollingNumberProps> = ({
   value,
   className = '',
-  delay = 0,
-  duration = 500,
 }) => {
-  const [display, setDisplay] = useState(value)
   const ref = useRef<HTMLSpanElement>(null)
-  // Trigger whenever the element enters the viewport
-  const inView = useInView(ref, { margin: '-20px' })
-  const intervalRef = useRef<number | null>(null)
-  const timeoutRef = useRef<number | null>(null)
-  const hoverIntervalRef = useRef<number | null>(null)
+  const inView = useInView(ref, { margin: '-30px' })
+  const [spinKey, setSpinKey] = useState(0)
 
-  const stopAnimation = useCallback(() => {
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    if (timeoutRef.current !== null) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-  }, [])
-
-  const startFlicker = useCallback(() => {
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setDisplay(value)
-      return
-    }
-
-    stopAnimation()
-
-    const stepMs = 30
-    const totalSteps = Math.max(12, Math.floor(duration / stepMs))
-    let currentStep = 0
-    const chars = value.split('')
-    const targetLen = chars.length
-
-    intervalRef.current = window.setInterval(() => {
-      currentStep++
-      const progress = currentStep / totalSteps
-
-      const nextChars = chars.map((finalChar, index) => {
-        // Keep non-numeric characters intact
-        if (!DIGITS.includes(finalChar)) {
-          return finalChar
-        }
-
-        // Left-to-right progressive lock threshold
-        const lockThreshold = (index + 0.6) / targetLen
-        if (progress >= lockThreshold) {
-          return finalChar
-        }
-
-        // Rapid random digit
-        return DIGITS[Math.floor(Math.random() * DIGITS.length)]
-      })
-
-      setDisplay(nextChars.join(''))
-
-      if (currentStep >= totalSteps) {
-        stopAnimation()
-        setDisplay(value)
-      }
-    }, stepMs)
-  }, [value, duration, stopAnimation])
-
-  // Triggers whenever user reaches/scrolls into this element
-  useEffect(() => {
-    if (inView) {
-      if (delay > 0) {
-        timeoutRef.current = window.setTimeout(startFlicker, delay)
-      } else {
-        startFlicker()
-      }
-    }
-
-    return () => stopAnimation()
-  }, [inView, delay, startFlicker, stopAnimation])
-
+  // Smooth re-roll on hover
   const handleMouseEnter = () => {
-    if (hoverIntervalRef.current !== null) {
-      clearInterval(hoverIntervalRef.current)
-    }
-
-    let step = 0
-    const maxSteps = 10
-    const chars = value.split('')
-    const targetLen = chars.length
-
-    hoverIntervalRef.current = window.setInterval(() => {
-      step++
-      const progress = step / maxSteps
-
-      const nextChars = chars.map((finalChar, index) => {
-        if (!DIGITS.includes(finalChar)) return finalChar
-        if (progress >= (index + 0.6) / targetLen) return finalChar
-        return DIGITS[Math.floor(Math.random() * DIGITS.length)]
-      })
-
-      setDisplay(nextChars.join(''))
-
-      if (step >= maxSteps) {
-        if (hoverIntervalRef.current !== null) {
-          clearInterval(hoverIntervalRef.current)
-          hoverIntervalRef.current = null
-        }
-        setDisplay(value)
-      }
-    }, 28)
+    setSpinKey(prev => prev + 1)
   }
+
+  const chars = value.split('')
 
   return (
     <span
       ref={ref}
       onMouseEnter={handleMouseEnter}
-      className={`inline-block tabular-nums select-none cursor-pointer text-[#111110] ${className}`}
+      className={`inline-flex items-baseline font-serif cursor-pointer select-none text-[#111110] leading-none ${className}`}
     >
-      {display}
+      {chars.map((char, idx) => {
+        const isDigit = /^[0-9]$/.test(char)
+        if (isDigit) {
+          const target = parseInt(char, 10)
+          return (
+            <DigitColumn
+              key={idx}
+              target={target}
+              inView={inView}
+              colIndex={idx}
+              spinKey={spinKey}
+            />
+          )
+        }
+        // Non-digits like '+', '.', 'K'
+        return (
+          <span
+            key={idx}
+            className="inline-block h-[1.12em] flex items-center justify-center leading-none px-[0.015em]"
+          >
+            {char}
+          </span>
+        )
+      })}
     </span>
   )
 }
