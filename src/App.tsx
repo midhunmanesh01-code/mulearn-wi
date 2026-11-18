@@ -30,6 +30,7 @@ import {
 } from '@/config/content'
 import { Navbar } from '@/components/Navbar'
 import { Preloader } from '@/components/Preloader'
+import { ScrollRail } from '@/components/ScrollRail'
 import { FlickerNumber } from '@/components/FlickerNumber'
 import { SplitText } from '@/components/SplitText'
 
@@ -1112,7 +1113,7 @@ const Moments: React.FC = () => {
   const icons = [Calendar, Users, Zap, Star]
 
   return (
-    <section className="bg-white border-y border-black/[0.06]">
+    <section id="moments" className="bg-white border-y border-black/[0.06]">
       <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24">
         <FadeIn className="mb-14">
           <Label>Community Moments</Label>
@@ -1713,6 +1714,7 @@ export const App: React.FC = () => {
     <div className="paper-texture relative min-h-[100dvh] overflow-x-clip bg-[#FAFAF8] font-sans selection:bg-[#BEFF62] selection:text-[#111110]">
       <Preloader onComplete={() => setIsReady(true)} />
       <Navbar />
+      <ScrollRail />
       <main>
         <Hero isReady={isReady} />
         <Marquee />
