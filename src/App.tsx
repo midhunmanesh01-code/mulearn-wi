@@ -573,57 +573,259 @@ const Community: React.FC = () => (
 )
 
 // ─── Learning Circles ─────────────────────────────────────────────────────────
-const Circles: React.FC = () => (
-  <section id="circles" className="bg-[#111110]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24">
-      <FadeIn className="mb-14">
-        {/* Dark-mode label variant */}
-        <div className="inline-flex items-center gap-2 mb-5">
-          <span className="w-4 h-px bg-[#BEFF62]" />
-          <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase">Learning Circles</span>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-          <h2 className="font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-white">
-            Pick a circle.<br /><span className="italic text-white/25">Start building.</span>
-          </h2>
-          <p className="text-sm text-white/30 max-w-xs leading-relaxed">
-            Small groups, big output. Weekly standups, real codebases, shared projects.
-          </p>
-        </div>
-      </FadeIn>
+const Circles: React.FC = () => {
+  const [activeCircle, setActiveCircle] = useState('01')
 
-      <div className="grid sm:grid-cols-2 gap-px bg-white/[0.05] rounded-2xl overflow-hidden border border-white/[0.05]">
-        {circles.map((c, i) => (
-          <FadeIn key={c.id} delay={i * 0.06}>
-            <div className="group relative bg-[#111110] p-8 sm:p-9 transition-colors duration-300 hover:bg-[#161614] h-full flex flex-col cursor-default">
-              {/* Lime top bar */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl leading-none select-none" role="img" aria-label={c.name}>{c.emoji}</span>
-                  <span className="font-mono text-[9px] text-[#BEFF62]/50 tracking-widest">{c.id}</span>
-                </div>
-                <span className="font-mono text-[9px] text-white/20 tracking-wider">{c.members} members</span>
-              </div>
-
-              <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-[#BEFF62] transition-colors duration-300">{c.name}</h3>
-              <p className="text-sm text-white/35 leading-relaxed mb-7 flex-1">{c.blurb}</p>
-
-              <div className="flex flex-wrap gap-1.5 mt-auto">
-                {c.tags.map((t) => (
-                  <span key={t} className="font-mono text-[9px] tracking-wider text-white/20 border border-white/[0.07] rounded-sm px-2 py-1 uppercase group-hover:border-[#BEFF62]/20 group-hover:text-white/35 transition-colors duration-200">
-                    {t}
-                  </span>
-                ))}
-              </div>
+  return (
+    <section id="circles" className="bg-[#FAFAF8] border-b border-black/[0.08] relative">
+      <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
+        {/* Header */}
+        <FadeIn className="mb-14 sm:mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div>
+              <Label>Circles [04] · Student Guilds</Label>
+              <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4.2rem)] leading-[1.05] text-[#111110] tracking-tight">
+                Choose your craft.<br />
+                <span className="italic text-[#111110]/35 font-normal">Four circles, zero classroom rules.</span>
+              </h2>
+              <p className="mt-5 text-sm sm:text-base text-[#111110]/70 leading-relaxed max-w-lg">
+                Self-directed peer cohorts meeting weekly at CEC. Pick your domain, find your crew, and push verifiable commits.
+              </p>
             </div>
-          </FadeIn>
-        ))}
+
+            <div className="hidden lg:flex items-center gap-2 font-mono text-[11px] text-[#9A9A95] uppercase tracking-wider self-end">
+              <span>Hover or click to inspect</span>
+              <ArrowRight size={13} className="text-[#111110]" />
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* Desktop: Expanding Horizontal Accordion Deck */}
+        <FadeIn delay={0.1} className="hidden lg:flex gap-3.5 h-[500px]">
+          {circles.map((c) => {
+            const isSelected = activeCircle === c.id
+
+            return (
+              <motion.div
+                key={c.id}
+                layout
+                onClick={() => setActiveCircle(c.id)}
+                onMouseEnter={() => setActiveCircle(c.id)}
+                transition={{ type: 'spring', stiffness: 350, damping: 32 }}
+                className={`relative rounded-2xl cursor-pointer overflow-hidden transition-all duration-300 flex flex-col justify-between ${
+                  isSelected
+                    ? 'flex-[3.5] bg-white border border-black/10 p-8 sm:p-9 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.08)]'
+                    : 'flex-1 bg-[#F2F2EE] hover:bg-[#EBEBE5] border border-black/[0.06] p-6'
+                }`}
+              >
+                {/* Top lime accent on active */}
+                {isSelected && (
+                  <motion.div
+                    layoutId="circle-active-bar"
+                    className="absolute top-0 left-0 right-0 h-1 bg-[#BEFF62]"
+                  />
+                )}
+
+                {/* Collapsed State: Vertical Typography */}
+                {!isSelected ? (
+                  <div className="h-full flex flex-col justify-between items-center py-2 select-none">
+                    <span className="font-mono text-xs font-semibold text-[#111110]/40">
+                      {c.id}
+                    </span>
+
+                    <span className="font-serif text-2xl text-[#111110] tracking-tight whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
+                      {c.name}
+                    </span>
+
+                    <span className="font-mono text-[10px] text-[#111110]/50 tracking-wider">
+                      {c.members}p
+                    </span>
+                  </div>
+                ) : (
+                  /* Expanded Active State: Deep Editorial Showcase */
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                    className="h-full flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Top bar */}
+                      <div className="flex items-center justify-between pb-5 border-b border-black/[0.06]">
+                        <div className="flex items-center gap-2.5">
+                          <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#111110] text-[#BEFF62]">
+                            {c.id}
+                          </span>
+                          <span className="font-mono text-[10px] tracking-[0.2em] text-[#9A9A95] uppercase font-semibold">
+                            {c.track}
+                          </span>
+                        </div>
+
+                        <div className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#111110]/70 bg-[#FAFAF8] border border-black/[0.06] px-3 py-1 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/10" />
+                          <span>{c.members} active builders</span>
+                        </div>
+                      </div>
+
+                      {/* Main Title & Tagline */}
+                      <div className="mt-6">
+                        <h3 className="font-serif text-3xl sm:text-4xl text-[#111110] font-normal tracking-tight">
+                          {c.name}
+                        </h3>
+                        <p className="font-sans text-xs text-[#111110]/50 font-medium tracking-wide mt-1">
+                          {c.tagline}
+                        </p>
+                        <p className="font-sans text-sm text-[#3A3A37]/80 leading-relaxed mt-4 max-w-xl">
+                          {c.blurb}
+                        </p>
+                      </div>
+
+                      {/* Info grid */}
+                      <div className="grid grid-cols-2 gap-6 mt-7 pt-5 border-t border-black/[0.06]">
+                        <div>
+                          <span className="block font-mono text-[9px] uppercase tracking-wider text-[#9A9A95] font-semibold mb-1">
+                            Primary Output
+                          </span>
+                          <p className="font-sans text-xs sm:text-sm text-[#111110]/85 font-medium leading-snug">
+                            {c.output}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="block font-mono text-[9px] uppercase tracking-wider text-[#9A9A95] font-semibold mb-1">
+                            Cohort Rhythm
+                          </span>
+                          <p className="font-sans text-xs sm:text-sm text-[#111110]/85 font-medium leading-snug">
+                            {c.cadence}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom row: Stack Tags + Shimmer Join Button */}
+                    <div className="pt-6 border-t border-black/[0.06] flex items-center justify-between gap-4">
+                      <div className="flex flex-wrap gap-1.5">
+                        {c.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="font-mono text-[9px] tracking-wider text-[#111110]/70 bg-[#FAFAF8] border border-black/[0.06] rounded px-2 py-1 uppercase"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <a
+                        href={chapter.joinUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group/btn relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111110] text-[#FAFAF8] font-sans font-medium text-xs tracking-wide shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out shrink-0"
+                      >
+                        <span className="relative z-10 flex items-center gap-1.5">
+                          Join {c.name}
+                        </span>
+                        <ArrowRight className="relative z-10 w-3.5 h-3.5 text-[#BEFF62] transition-transform duration-300 ease-out group-hover/btn:translate-x-1" />
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </motion.div>
+            )
+          })}
+        </FadeIn>
+
+        {/* Mobile: Sleek Vertical Accordion */}
+        <div className="lg:hidden space-y-3">
+          {circles.map((c) => {
+            const isSelected = activeCircle === c.id
+
+            return (
+              <div
+                key={c.id}
+                onClick={() => setActiveCircle(c.id)}
+                className={`rounded-2xl transition-all duration-300 overflow-hidden border ${
+                  isSelected
+                    ? 'bg-white border-black/15 shadow-md p-6'
+                    : 'bg-[#F2F2EE] border-black/[0.06] p-4 cursor-pointer'
+                }`}
+              >
+                {!isSelected ? (
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-xs font-bold text-[#111110]/50">{c.id}</span>
+                      <h3 className="font-serif text-lg text-[#111110]">{c.name}</h3>
+                    </div>
+                    <span className="font-mono text-xs text-[#9A9A95]">{c.members} peers</span>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
+                      <span className="font-mono text-[9px] tracking-widest text-[#9A9A95] uppercase font-bold">
+                        {c.track}
+                      </span>
+                      <span className="font-mono text-xs text-[#111110] font-medium">
+                        {c.members} builders
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif text-2xl text-[#111110] font-normal mt-3">
+                      {c.name}
+                    </h3>
+                    <p className="font-sans text-xs text-[#3A3A37]/75 leading-relaxed mt-2">
+                      {c.blurb}
+                    </p>
+
+                    <div className="mt-4 pt-3 border-t border-black/[0.06] space-y-2">
+                      <div className="text-xs font-sans text-[#111110]/80">
+                        <span className="font-mono text-[9px] uppercase text-[#9A9A95] block">Rhythm:</span>
+                        {c.cadence}
+                      </div>
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {c.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="font-mono text-[9px] text-[#111110]/60 bg-[#FAFAF8] border border-black/[0.06] px-1.5 py-0.5 rounded"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <a
+                      href={chapter.joinUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-flex items-center gap-2 font-mono text-xs text-[#111110] font-semibold uppercase tracking-wider"
+                    >
+                      Join Circle <ArrowRight size={12} className="text-[#111110]" />
+                    </a>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Bottom Editorial Strip */}
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-black/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <p className="font-mono text-xs text-[#3A3A37]/65">
+            // Can’t find your domain? You can initiate a new circle at CEC with 3 peers.
+          </p>
+
+          <a
+            href={chapter.discord}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 font-mono text-xs text-[#111110] font-semibold uppercase tracking-wider hover:gap-3 transition-all"
+          >
+            <span>Propose a New Circle</span>
+            <ArrowRight size={12} className="text-[#111110]" />
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
-)
+    </section>
+  )
+}
 
 // ─── Karma / Proof of Work ────────────────────────────────────────────────────
 const Karma: React.FC = () => (
