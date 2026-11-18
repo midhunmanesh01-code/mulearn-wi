@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
           <div
             className={`hidden md:block absolute inset-0 rounded-[inherit] -z-10 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isScrolled
-                ? 'opacity-100 bg-white/80 backdrop-blur-xl border border-black/[0.07] shadow-[0_2px_24px_-4px_rgba(0,0,0,0.12)]'
+                ? 'opacity-100 bg-white/85 backdrop-blur-xl border border-black/[0.08] shadow-[0_4px_28px_-6px_rgba(0,0,0,0.12)]'
                 : 'opacity-0'
             }`}
             aria-hidden="true"
@@ -80,7 +80,7 @@ export const Navbar: React.FC = () => {
                 aria-label="µLearn CEC home"
               >
                 {/* Logo mark */}
-                <div className={`flex-shrink-0 flex items-center justify-center rounded-sm bg-[#111110] font-serif italic font-normal text-[#BEFF62] transition-all duration-300 ease-out group-hover:scale-105 ${
+                <div className={`flex-shrink-0 flex items-center justify-center rounded-sm bg-[#111110] font-serif italic font-normal text-[#BEFF62] transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-black shadow-xs ${
                   isScrolled ? 'w-8 h-8 text-base' : 'w-9 h-9 sm:w-10 sm:h-10 text-xl'
                 }`}>
                   µ
@@ -91,19 +91,19 @@ export const Navbar: React.FC = () => {
                   className={`flex flex-col -space-y-0.5 transition-[max-width,opacity,transform] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
                     isScrolled
                       ? 'max-w-0 opacity-0 -translate-x-2 pointer-events-none'
-                      : 'max-w-[240px] opacity-100 translate-x-0'
+                      : 'max-w-[280px] opacity-100 translate-x-0'
                   }`}
                   aria-hidden={isScrolled}
                 >
                   <div className="flex items-center gap-1.5 whitespace-nowrap">
-                    <span className="font-sans font-semibold text-lg sm:text-xl tracking-tight text-[#111110]">
+                    <span className="font-sans font-bold text-lg sm:text-xl tracking-tight text-[#111110]">
                       {NAV_CONFIG.brandName}
                     </span>
-                    <span className="font-mono text-xs font-medium bg-[#BEFF62] text-[#111110] px-1.5 py-0.5 rounded-sm">
+                    <span className="font-mono text-[10px] sm:text-xs font-semibold bg-[#111110] text-[#BEFF62] px-1.5 py-0.5 rounded tracking-wider uppercase">
                       {NAV_CONFIG.brandSuffix}
                     </span>
                   </div>
-                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-[#9A9A95] whitespace-nowrap">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-[#9A9A95] whitespace-nowrap">
                     {NAV_CONFIG.organizerBadge}
                   </span>
                 </div>
@@ -111,23 +111,23 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* ── Center: desktop nav ──────────────────── */}
-            <div className="hidden md:flex items-center justify-center space-x-0.5 lg:space-x-1">
+            <div className="hidden md:flex items-center justify-center space-x-1 lg:space-x-2">
               {NAVIGATION_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="relative px-3.5 py-1.5 font-mono text-xs uppercase tracking-wider text-[#3A3A37]/60 hover:text-[#111110] transition-colors duration-200 group whitespace-nowrap"
+                  className="relative px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[#3A3A37]/70 hover:text-[#111110] transition-colors duration-200 group whitespace-nowrap flex items-center gap-1.5"
                 >
-                  <span className="inline-block transition-transform duration-200 ease-out group-hover:-translate-y-0.5">
+                  <span className="inline-block transition-transform duration-200 ease-out group-hover:-translate-y-0.5 font-medium">
                     {link.label}
                   </span>
                   {link.badge && (
-                    <span className="ml-1.5 px-1.5 py-0.5 text-[9px] font-mono tracking-tight bg-[#BEFF62] text-[#111110] rounded-sm">
+                    <span className="px-1.5 py-0.5 text-[9px] font-mono tracking-tight bg-[#BEFF62] text-[#111110] font-semibold rounded-sm shadow-xs">
                       {link.badge}
                     </span>
                   )}
-                  <span className="absolute bottom-0.5 left-3.5 right-3.5 h-[1.5px] bg-[#BEFF62] scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
+                  <span className="absolute bottom-0.5 left-3 right-3 h-[1.5px] bg-[#BEFF62] scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
                 </a>
               ))}
             </div>
@@ -141,7 +141,7 @@ export const Navbar: React.FC = () => {
                   href={NAV_CONFIG.ctaHref}
                   onClick={(e) => handleNavClick(e, NAV_CONFIG.ctaHref)}
                   rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}
-                  className="!rounded-full !bg-[#111110] !text-white hover:!bg-[#2a2a28] !shadow-none whitespace-nowrap"
+                  className="!rounded-full !bg-[#111110] !text-white hover:!bg-[#2a2a28] !shadow-none !px-4 !py-2 !text-xs font-mono uppercase tracking-wider font-semibold whitespace-nowrap"
                 >
                   {NAV_CONFIG.ctaText}
                 </Button>
@@ -155,7 +155,7 @@ export const Navbar: React.FC = () => {
                   aria-expanded={isMobileMenuOpen}
                   aria-controls="mobile-navigation"
                   aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-                  className="p-2.5 rounded-full bg-[#111110] text-white hover:bg-[#2a2a28] transition-colors duration-200 flex items-center justify-center overflow-hidden relative w-11 h-11 cursor-pointer shrink-0"
+                  className="p-2.5 rounded-full bg-[#111110] text-white hover:bg-[#2a2a28] transition-colors duration-200 flex items-center justify-center overflow-hidden relative w-11 h-11 cursor-pointer shrink-0 shadow-sm"
                 >
                   <div className={`absolute transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'}`}>
                     <X className="w-5 h-5" />
@@ -183,26 +183,36 @@ export const Navbar: React.FC = () => {
                   opacity: 0, height: 0, y: -10, scale: 0.97,
                   transition: { height: { duration: 0.3, ease: [0.16,1,0.3,1] }, opacity: { duration: 0.2 } },
                 }}
-                className="overflow-hidden md:hidden mt-2 rounded-[20px] bg-white border border-black/[0.07] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.15)]"
+                className="overflow-hidden md:hidden mt-2 rounded-[22px] bg-white border border-black/[0.08] shadow-[0_12px_36px_-8px_rgba(0,0,0,0.18)]"
               >
                 <div className="flex flex-col space-y-1 p-3">
-                  {NAVIGATION_LINKS.map((link) => {
+                  {NAVIGATION_LINKS.map((link, idx) => {
                     const isSelected = clickedHref === link.href
                     return (
                       <a
                         key={link.href}
                         href={link.href}
                         onClick={(e) => handleNavClick(e, link.href)}
-                        className={`group flex items-center justify-between px-4 py-3 font-mono text-sm uppercase tracking-wider rounded-xl transition-all duration-200 border cursor-pointer ${
+                        className={`group flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 border cursor-pointer ${
                           isSelected
-                            ? 'bg-[#BEFF62]/30 border-[#BEFF62] text-[#111110]'
+                            ? 'bg-[#BEFF62]/25 border-[#BEFF62] text-[#111110]'
                             : 'border-transparent text-[#3A3A37] hover:bg-[#BEFF62]/15 hover:border-[#BEFF62]/40'
                         }`}
                       >
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">{link.label}</span>
-                          {link.badge && (
-                            <span className="px-1.5 py-0.5 text-[10px] font-mono bg-[#BEFF62] text-[#111110] rounded-sm">{link.badge}</span>
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-[10px] text-[#9A9A95]">0{idx + 1}</span>
+                            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#111110]">{link.label}</span>
+                            {link.badge && (
+                              <span className="px-1.5 py-0.5 text-[9px] font-mono font-semibold bg-[#BEFF62] text-[#111110] rounded-sm">
+                                {link.badge}
+                              </span>
+                            )}
+                          </div>
+                          {link.desc && (
+                            <span className="text-[11px] text-[#9A9A95] mt-0.5 ml-5">
+                              {link.desc}
+                            </span>
                           )}
                         </div>
                         <ArrowRight className={`w-4 h-4 transition-all duration-200 ${isSelected ? 'translate-x-1 text-[#111110]' : 'text-[#C4C4BE] group-hover:translate-x-1 group-hover:text-[#111110]'}`} />

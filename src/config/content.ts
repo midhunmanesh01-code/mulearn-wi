@@ -2,7 +2,7 @@
 export const chapter = {
   name:     'µLearn CEC',
   fullName: 'College of Engineering, Chengannur',
-  tagline:  'A peer-learning community at CEC that breaks academic echo chambers and builds real things.',
+  tagline:  'No textbooks. No hierarchies. Just students learning together, writing real code, and proving skill by shipping in public.',
   joinUrl:  'https://app.mulearn.org',
   discord:  'https://discord.gg/mulearn',
   instagram:'https://instagram.com/mulearncec',
@@ -91,18 +91,19 @@ export const communityMoments = [
   { label: 'Summer of Code',         desc: 'Open-source week',        aspect: 'wide'   },
 ]
 
-// Navigation config
+// Navigation config - Levelled-up high-agency naming
 export const NAVIGATION_LINKS = [
-  { href: '#circles', label: 'Circles',   badge: null   },
-  { href: '#karma',   label: 'Karma',     badge: null   },
-  { href: '#events',  label: 'Events',    badge: null   },
-  { href: '#join',    label: 'Join',      badge: 'Open' },
+  { href: '#about',   label: 'Manifesto',     badge: null,  desc: 'Why peer learning compounds' },
+  { href: '#circles', label: 'Circles',       badge: '04',  desc: 'Active student learning cohorts' },
+  { href: '#karma',   label: 'Proof of Work', badge: 'KP',  desc: 'Verifiable karma leaderboard' },
+  { href: '#events',  label: 'Timeline',      badge: "'25", desc: 'Hackathons, sprints & demo days' },
 ] as const
 
 export const NAV_CONFIG = {
   brandName:      'µLearn',
   brandSuffix:    'CEC',
-  organizerBadge: 'College of Engineering, Chengannur',
-  ctaText:        'Join now',
+  chapterTag:     'CAMPUS CHAPTER',
+  organizerBadge: 'BUILDERS COLLECTIVE · CHENGANNUR',
+  ctaText:        'Build With Us',
   ctaHref:        '#join',
 }

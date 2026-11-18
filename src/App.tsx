@@ -62,7 +62,7 @@ const Hero: React.FC = () => (
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#9AE637]" />
           </span>
           <span className="font-mono text-[10px] tracking-widest text-[#9A9A95] uppercase">
-            GTech µLearn · College of Engineering, Chengannur
+            GTech µLearn · Campus Chapter · CEC CHN
           </span>
         </motion.div>
 
@@ -74,7 +74,7 @@ const Hero: React.FC = () => (
             transition={{ duration: 0.95, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
             className="font-serif text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight text-[#111110]"
           >
-            Learn out loud.
+            Break the syllabus.
           </motion.h1>
         </div>
         <div className="overflow-hidden">
@@ -84,7 +84,7 @@ const Hero: React.FC = () => (
             transition={{ duration: 0.95, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="font-serif italic text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight text-[#111110]/25"
           >
-            Build real things.
+            Ship in public.
           </motion.h1>
         </div>
 
@@ -172,7 +172,7 @@ const Marquee: React.FC = () => {
 
 // ─── Community / About ────────────────────────────────────────────────────────
 const Community: React.FC = () => (
-  <section className="bg-[#FAFAF8]">
+  <section id="about" className="bg-[#FAFAF8]">
     <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
       <div className="grid sm:grid-cols-[1fr_1fr] gap-16 sm:gap-24 items-start">
         {/* Left */}
@@ -511,7 +511,8 @@ const Footer: React.FC = () => (
           <div>
             <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Chapter</p>
             <div className="flex flex-col gap-2.5">
-              <a href="#events"           className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Events</a>
+              <a href="#about"            className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Manifesto</a>
+              <a href="#events"           className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Timeline</a>
               <a href="#join"             className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Join</a>
               <a href={chapter.linktree} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">All links</a>
             </div>
