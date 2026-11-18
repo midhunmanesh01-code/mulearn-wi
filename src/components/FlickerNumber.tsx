@@ -127,7 +127,7 @@ export const FlickerNumber: React.FC<FlickerNumberProps> = ({
     <span
       ref={ref}
       onMouseEnter={handleMouseEnter}
-      className={`inline-block font-mono tabular-nums select-none cursor-pointer text-[#111110] ${className}`}
+      className={`inline-block tabular-nums select-none cursor-pointer text-[#111110] ${className}`}
     >
       {display}
     </span>

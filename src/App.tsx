@@ -133,23 +133,33 @@ const Hero: React.FC = () => (
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="mt-16 sm:mt-20"
+        className="mt-20 sm:mt-26"
       >
-        <div className="border-t border-black/[0.07] mb-7" />
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-6">
-          {stats.map((s, idx) => (
-            <div key={s.label} className="group">
-              <div>
-                <FlickerNumber
-                  value={s.value}
-                  delay={idx * 50}
-                  className="text-[2.5rem] font-medium leading-none"
-                />
+        <div className="border-t border-black/[0.07] pt-10 sm:pt-14">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-10 sm:gap-x-14 lg:gap-x-20">
+            {stats.map((s, idx) => (
+              <div key={s.label} className="group">
+                {/* Big bold number in Hero serif */}
+                <div>
+                  <FlickerNumber
+                    value={s.value}
+                    delay={idx * 50}
+                    className="font-serif text-[3.25rem] sm:text-[4.25rem] lg:text-[5rem] font-normal tracking-tight leading-[0.88] text-[#111110]"
+                  />
+                </div>
+
+                {/* Label in Hero serif */}
+                <h4 className="font-serif text-2xl sm:text-[1.65rem] text-[#111110] tracking-tight leading-snug mt-3.5">
+                  {s.label}
+                </h4>
+
+                {/* Subtitle in clean light sans */}
+                <p className="font-sans text-xs sm:text-sm text-[#3A3A37]/55 mt-1 leading-normal font-normal">
+                  {s.sub}
+                </p>
               </div>
-              <p className="font-mono text-[9px] tracking-widest text-[#9AE637] uppercase mt-2.5 transition-colors group-hover:text-[#111110]">{s.label}</p>
-              <p className="text-xs text-[#9A9A95] mt-0.5">{s.sub}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </motion.div>
     </div>
@@ -304,7 +314,7 @@ const Karma: React.FC = () => (
             <div className="w-10 h-10 rounded-full bg-[#BEFF62] flex items-center justify-center">
               <Zap size={18} className="text-[#111110]" />
             </div>
-            <FlickerNumber value="2.4K" delay={200} className="text-5xl font-medium leading-none" />
+            <FlickerNumber value="2.4K" delay={200} className="font-serif text-5xl leading-none" />
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className={`w-2 h-2 rounded-full ${i < 4 ? 'bg-[#BEFF62]' : 'bg-[#E8E8E4]'}`} />
