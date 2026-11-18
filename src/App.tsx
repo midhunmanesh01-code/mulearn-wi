@@ -4,6 +4,8 @@ import { motion, useInView, AnimatePresence } from 'motion/react'
 import {
   ExternalLink,
   ArrowRight,
+  ArrowUp,
+  Heart,
   Zap,
   Users,
   Calendar,
@@ -1315,57 +1317,340 @@ const Join: React.FC = () => (
   </section>
 )
 
-// ─── Footer ────────────────────────────────────────────────────────────────────
-const Footer: React.FC = () => (
-  <footer className="bg-[#111110] border-t border-white/[0.05]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-14">
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-12">
-        {/* Brand */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-sm bg-[#BEFF62] flex items-center justify-center font-serif italic text-[#111110] text-lg">µ</div>
-            <span className="font-mono text-sm text-white/50">Learn <span className="text-[#BEFF62]">CEC</span></span>
-          </div>
-          <p className="text-xs text-white/25 max-w-[200px] leading-relaxed">Campus chapter of GTech µLearn at College of Engineering, Chengannur.</p>
-        </div>
+// ─── Footer Components & Icons ───────────────────────────────────────────────
+const DiscordIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+  </svg>
+)
 
-        {/* Links */}
-        <div className="grid grid-cols-3 gap-x-12 gap-y-8">
-          <div>
-            <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Community</p>
-            <div className="flex flex-col gap-2.5">
-              {[['Discord', chapter.discord], ['Instagram', chapter.instagram], ['LinkedIn', chapter.linkedin]].map(([label, href]) => (
-                <a key={label} href={href} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">{label}</a>
+const InstagramIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+)
+
+const LinkedinIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+)
+
+const GithubIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+)
+
+const LinktreeIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M13.736 5.853l4.005-4.117 2.325 2.38-4.2 4.005h5.908v3.305h-5.937l4.229 4.108-2.325 2.38-4.005-4.117v9.977h-3.472v-9.977l-4.005 4.117-2.325-2.38 4.229-4.108h-5.937v-3.305h5.908l-4.2-4.005 2.325-2.38 4.005 4.117v-5.627h3.472v5.627z" />
+  </svg>
+)
+
+const CEC_WORDS = [
+  { word: 'College', startIndex: 0 },
+  { word: 'of', startIndex: 7 },
+  { word: 'Engineering', startIndex: 9 },
+  { word: 'Chengannur', startIndex: 20 },
+] as const
+
+const CollegeHoverText: React.FC<{ className?: string }> = ({ className = '' }) => {
+  const [isHovered, setIsHovered] = useState(false)
+
+  return (
+    <a
+      href="https://ceconline.edu"
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group/cec relative inline-flex flex-wrap items-baseline text-white font-medium cursor-pointer transition-colors duration-200 ${className}`}
+      title="Visit College of Engineering Chengannur Official Website"
+      aria-label="College of Engineering Chengannur (opens official website in new tab)"
+    >
+      <span className="inline-flex flex-wrap items-baseline gap-x-[0.25em]">
+        {CEC_WORDS.map(({ word, startIndex }) => (
+          <span key={word} className="inline-flex whitespace-nowrap">
+            {word.split('').map((char, charIdx) => {
+              const index = startIndex + charIdx
+              return (
+                <span
+                  key={index}
+                  className="inline-block transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] text-zinc-300"
+                  style={{
+                    transform: isHovered ? 'translateY(-2.5px)' : 'translateY(0px)',
+                    color: isHovered ? '#BEFF62' : undefined,
+                    filter: isHovered ? 'drop-shadow(0 0 8px rgba(190, 255, 98, 0.45))' : 'none',
+                    transitionDelay: isHovered ? `${index * 14}ms` : '0ms',
+                  }}
+                >
+                  {char}
+                </span>
+              )
+            })}
+          </span>
+        ))}
+      </span>
+
+      {/* Micro external link indicator */}
+      <span
+        aria-hidden="true"
+        className="inline-flex items-center ml-1 text-[#BEFF62] transition-all duration-200 ease-out"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          transform: isHovered ? 'translate(0px, -1px)' : 'translate(-4px, 2px)',
+        }}
+      >
+        <ExternalLink className="w-3 h-3" />
+      </span>
+
+      {/* Hairline animated underline */}
+      <span
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#BEFF62] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-left"
+        style={{
+          transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
+        }}
+      />
+    </a>
+  )
+}
+
+const FOOTER_SOCIALS = [
+  { id: 'discord', label: 'Discord Community', href: chapter.discord, icon: DiscordIcon },
+  { id: 'instagram', label: 'Instagram', href: chapter.instagram, icon: InstagramIcon },
+  { id: 'linkedin', label: 'LinkedIn', href: chapter.linkedin, icon: LinkedinIcon },
+  { id: 'github', label: 'GitHub CEC Org', href: 'https://github.com/mulearn-cec', icon: GithubIcon },
+  { id: 'linktree', label: 'Linktree Hub', href: chapter.linktree, icon: LinktreeIcon },
+]
+
+const FOOTER_CIRCLES = [
+  { id: '01', name: 'Web & Apps', count: '48 builders', href: '#circles' },
+  { id: '02', name: 'AI & Machine Learning', count: '36 builders', href: '#circles' },
+  { id: '03', name: 'Cloud & Security', count: '29 builders', href: '#circles' },
+  { id: '04', name: 'Design & Product', count: '24 builders', href: '#circles' },
+]
+
+const FOOTER_NAV = [
+  { label: 'Ethos & Pillars', href: '#about' },
+  { label: 'Proof of Work', href: '#karma' },
+  { label: 'Moments Gallery', href: '#moments' },
+  { label: 'Campus Timeline', href: '#events' },
+  { label: 'Boarding Pass', href: '#join' },
+]
+
+// ─── Footer ────────────────────────────────────────────────────────────────────
+const Footer: React.FC = () => {
+  const footerRef = useRef<HTMLElement>(null)
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    if (e.pointerType === 'touch') return
+    const el = footerRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    el.style.setProperty('--cursor-x', `${e.clientX - rect.left}px`)
+    el.style.setProperty('--cursor-y', `${e.clientY - rect.top}px`)
+    el.style.setProperty('--reveal-opacity', '1')
+  }
+
+  const handlePointerLeave = () => {
+    const el = footerRef.current
+    if (!el) return
+    el.style.setProperty('--reveal-opacity', '0')
+  }
+
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return (
+    <footer
+      ref={footerRef}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      className="relative bg-[#111110] text-zinc-100 overflow-hidden border-t border-white/10"
+    >
+      {/* Animated Glowing Top Border Beam */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#BEFF62]/40 to-transparent pointer-events-none z-10"
+        aria-hidden="true"
+      />
+
+      {/* Interactive Cursor-Revealed Typography (Ultra-Clear & Sharp, No Blurry Glow) */}
+      <div
+        className="hidden lg:flex absolute inset-0 items-center justify-center pointer-events-none select-none overflow-hidden z-0"
+        aria-hidden="true"
+      >
+        <div
+          className="font-serif italic font-normal text-8xl md:text-9xl lg:text-[13rem] tracking-tight leading-none whitespace-nowrap transition-opacity duration-150"
+          style={{
+            maskImage:
+              'radial-gradient(circle 320px at var(--cursor-x, -999px) var(--cursor-y, -999px), black 55%, transparent 100%)',
+            WebkitMaskImage:
+              'radial-gradient(circle 320px at var(--cursor-x, -999px) var(--cursor-y, -999px), black 55%, transparent 100%)',
+            opacity: 'var(--reveal-opacity, 0)',
+          }}
+        >
+          <span className="text-white">µLearn </span>
+          <span className="text-[#BEFF62]">CEC</span>
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-10 pt-16 sm:pt-20 pb-10 sm:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 sm:pb-16 border-b border-white/[0.08]">
+          {/* Column 1: Brand & Chapter Identity */}
+          <div className="lg:col-span-6 flex flex-col justify-between">
+            <div>
+              {/* Brand Header */}
+              <button
+                type="button"
+                onClick={handleBackToTop}
+                className="group/brand flex items-center gap-3 cursor-pointer w-fit mb-5 text-left"
+                title="Back to top"
+              >
+                <div className="w-10 h-10 rounded-md bg-[#BEFF62] flex items-center justify-center font-serif italic text-[#111110] text-2xl font-bold transition-all duration-300 group-hover/brand:scale-105 group-hover/brand:shadow-[0_0_24px_rgba(190,255,98,0.5)]">
+                  µ
+                </div>
+                <div className="flex flex-col -space-y-0.5">
+                  <span className="font-serif italic text-2xl text-white tracking-tight group-hover/brand:text-[#BEFF62] transition-colors">
+                    µLearn <span className="font-mono text-sm not-italic font-bold text-[#BEFF62]">CEC</span>
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">
+                    CAMPUS CHAPTER // COLLEGE OF ENGG CHENGANNUR
+                  </span>
+                </div>
+              </button>
+
+              {/* Bio with animated College link */}
+              <p className="text-xs sm:text-sm text-white/50 leading-relaxed font-sans mb-6 max-w-md">
+                Autonomous student chapter of GTech µLearn based at <CollegeHoverText />. Students collaborating, writing real code, and proving skill by shipping in public.
+              </p>
+            </div>
+
+            {/* Social channels with tactile card lift */}
+            <div>
+              <p className="font-mono text-[10px] tracking-widest text-white/30 uppercase mb-3">
+                COMMUNITY CHANNELS
+              </p>
+              <div className="flex items-center gap-2">
+                {FOOTER_SOCIALS.map((soc) => {
+                  const Icon = soc.icon
+                  return (
+                    <a
+                      key={soc.id}
+                      href={soc.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={soc.label}
+                      title={soc.label}
+                      className="group/soc relative w-10 h-10 flex items-center justify-center bg-white/[0.04] hover:bg-[#BEFF62]/10 border border-white/10 hover:border-[#BEFF62]/60 text-white/70 hover:text-[#BEFF62] rounded-lg transition-all duration-300 transform-gpu hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(190,255,98,0.25)] active:scale-95 cursor-pointer"
+                    >
+                      <Icon className="w-4 h-4" />
+                    </a>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Column 2: Learning Circles */}
+          <div className="lg:col-span-3 space-y-3">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[#BEFF62] font-bold flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 bg-[#BEFF62] rounded-full shadow-[0_0_8px_#BEFF62]" />
+              <span>CIRCLES</span>
+            </div>
+            <div className="flex flex-col">
+              {FOOTER_CIRCLES.map((circle) => (
+                <a
+                  key={circle.id}
+                  href={circle.href}
+                  className="group flex items-center justify-between py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-2.5 transform-gpu group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-200 shadow-[0_0_8px_#BEFF62] -mr-1 group-hover:mr-0" />
+                    <span className="text-xs sm:text-sm text-white/70 group-hover:text-white transition-colors">
+                      {circle.name}
+                    </span>
+                  </div>
+                  <span className="font-mono text-[10px] text-white/30 group-hover:text-[#BEFF62] transition-colors">
+                    {circle.count}
+                  </span>
+                </a>
               ))}
             </div>
           </div>
-          <div>
-            <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Platform</p>
-            <div className="flex flex-col gap-2.5">
-              <a href={chapter.joinUrl} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">µLearn App</a>
-              <a href="#circles" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Circles</a>
-              <a href="#karma"   className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Karma</a>
+
+          {/* Column 3: Platform Navigation */}
+          <div className="lg:col-span-3 space-y-3">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[#BEFF62] font-bold flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 bg-[#BEFF62] rounded-full shadow-[0_0_8px_#BEFF62]" />
+              <span>EXPLORE</span>
             </div>
-          </div>
-          <div>
-            <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Chapter</p>
-            <div className="flex flex-col gap-2.5">
-              <a href="#about"            className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Manifesto</a>
-              <a href="#events"           className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Timeline</a>
-              <a href="#join"             className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Join</a>
-              <a href={chapter.linktree} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">All links</a>
+            <div className="flex flex-col">
+              {FOOTER_NAV.map((nav) => (
+                <a
+                  key={nav.label}
+                  href={nav.href}
+                  className="group flex items-center justify-between py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
+                >
+                  <span className="text-xs sm:text-sm text-white/60 group-hover:text-white group-hover:translate-x-1.5 transition-all duration-200 ease-out">
+                    {nav.label}
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5 text-white/20 group-hover:text-[#BEFF62] group-hover:translate-x-1 transition-all duration-200 ease-out" />
+                </a>
+              ))}
+              <a
+                href={chapter.joinUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center justify-between py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
+              >
+                <span className="text-xs sm:text-sm text-[#BEFF62]/80 group-hover:text-[#BEFF62] group-hover:translate-x-1.5 transition-all duration-200 ease-out">
+                  µLearn App
+                </span>
+                <ExternalLink className="w-3.5 h-3.5 text-[#BEFF62]/60 group-hover:text-[#BEFF62] transition-colors" />
+              </a>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-12 pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p className="font-mono text-[10px] text-white/15 uppercase tracking-widest">© {new Date().getFullYear()} µLearn CEC</p>
-        <p className="font-mono text-[10px] text-white/10">College of Engineering, Chengannur · Kerala, India</p>
+        {/* Bottom Bar: Copyright, Credit & Back to Top */}
+        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/40">
+          <div className="order-2 sm:order-1 text-center sm:text-left text-[11px] sm:text-xs">
+            © {new Date().getFullYear()} µLearn CEC · College of Engineering Chengannur
+          </div>
+
+          <div className="order-1 sm:order-2 flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto">
+            <span className="text-[11px] text-white/40 inline-flex items-center gap-1.5">
+              <span>Built with</span>
+              <Heart className="w-3.5 h-3.5 text-[#BEFF62] fill-[#BEFF62] inline shrink-0" role="img" aria-label="love" />
+              <span>by</span>
+              <span className="text-white/70 font-medium hover:text-[#BEFF62] transition-colors">
+                CEC Builders
+              </span>
+            </span>
+
+            <button
+              type="button"
+              onClick={handleBackToTop}
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-[#BEFF62]/15 border border-white/10 hover:border-[#BEFF62]/50 text-[11px] font-mono text-white/70 hover:text-[#BEFF62] transition-all duration-300 active:scale-95 cursor-pointer shadow-sm shrink-0"
+              aria-label="Back to top"
+            >
+              <span>BACK TO TOP</span>
+              <ArrowUp className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-1" />
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  </footer>
-)
+    </footer>
+  )
+}
 
 // ─── App root ──────────────────────────────────────────────────────────────────
 export const App: React.FC = () => {
