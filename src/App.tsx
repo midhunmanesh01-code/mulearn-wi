@@ -1159,49 +1159,154 @@ const Events: React.FC = () => (
 
 // ─── Join CTA ──────────────────────────────────────────────────────────────────
 const Join: React.FC = () => (
-  <section id="join" className="bg-[#111110]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
+  <section id="join" className="bg-[#FAFAF8] border-b border-black/[0.08] relative">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
       <FadeIn>
-        <div className="relative overflow-hidden rounded-2xl bg-[#BEFF62] px-8 py-20 sm:px-20 text-center">
-          {/* Fine grid on lime */}
+        {/* Physical Boarding Pass Card */}
+        <div className="relative rounded-3xl bg-[#111110] text-white border border-black/20 overflow-hidden shadow-2xl">
+          {/* Top lime hairline indicator */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#BEFF62]" />
+
+          {/* Subtle background ambient glow */}
           <div
-            className="absolute inset-0 opacity-20 pointer-events-none"
-            style={{
-              backgroundImage: 'linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)',
-              backgroundSize: '32px 32px',
-            }}
+            className="absolute -left-20 -top-20 w-80 h-80 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(190,255,98,0.12) 0%, transparent 70%)' }}
+            aria-hidden="true"
           />
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 mb-6">
-              <span className="w-4 h-px bg-[#111110]/30" />
-              <span className="font-mono text-[10px] tracking-[0.2em] text-[#111110]/50 uppercase">Get started</span>
+
+          <div className="relative z-10 p-8 sm:p-12 lg:p-14 grid lg:grid-cols-[1.3fr_1fr] gap-10 lg:gap-14 items-center">
+            {/* Left: Manifesto & Headline */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-4 h-px bg-[#BEFF62]" />
+                <span className="font-mono text-[10px] tracking-[0.25em] text-[#BEFF62] uppercase font-bold">
+                  Get Started · Chapter Induction
+                </span>
+              </div>
+
+              <h2 className="font-serif text-[clamp(2.6rem,6vw,4.5rem)] leading-[0.98] text-white tracking-tight">
+                Start building.<br />
+                <span className="italic text-[#BEFF62] font-normal">Earn karma.</span>
+              </h2>
+
+              <p className="mt-5 text-sm sm:text-base text-white/65 leading-relaxed max-w-lg">
+                Create your µLearn account, join the CEC chapter, pick your circle. Karma starts the moment you show up.
+              </p>
+
+              {/* 3 Quick Proof Chips */}
+              <div className="flex flex-wrap items-center gap-2.5 mt-6">
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/75 bg-white/[0.05] border border-white/10 px-3 py-1 rounded-full">
+                  <CheckCircle2 size={12} className="text-[#BEFF62]" />
+                  <span>Zero Club Fees</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/75 bg-white/[0.05] border border-white/10 px-3 py-1 rounded-full">
+                  <CheckCircle2 size={12} className="text-[#BEFF62]" />
+                  <span>4 Active Circles</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/75 bg-white/[0.05] border border-white/10 px-3 py-1 rounded-full">
+                  <CheckCircle2 size={12} className="text-[#BEFF62]" />
+                  <span>Public Leaderboard</span>
+                </div>
+              </div>
+
+              {/* Shimmer Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3.5 mt-8 items-stretch sm:items-center">
+                <a
+                  href={chapter.joinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/btn relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#BEFF62] text-[#111110] font-sans font-medium text-xs sm:text-sm tracking-wide shadow-sm hover:shadow-lg active:scale-[0.98] transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out"
+                >
+                  <span className="relative z-10 flex items-center gap-2 font-semibold">
+                    Create your account
+                  </span>
+                  <ExternalLink className="relative z-10 w-4 h-4 text-[#111110] transition-transform duration-300 ease-out group-hover/btn:translate-x-1" />
+                </a>
+
+                <a
+                  href={chapter.discord}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/disc relative inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/80 hover:text-white border border-white/15 font-sans font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 cursor-pointer"
+                >
+                  <span>Join Discord</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-white/50 group-hover/disc:text-[#BEFF62] group-hover/disc:translate-x-1 transition-all" />
+                </a>
+              </div>
             </div>
-            <h2 className="font-serif text-[clamp(3rem,8vw,6rem)] leading-[0.92] text-[#111110] mb-6">
-              Start building.
-              <br />
-              <span className="italic opacity-40">Earn karma.</span>
-            </h2>
-            <p className="text-[#111110]/55 text-sm max-w-sm mx-auto mb-10 leading-relaxed">
-              Create your µLearn account, join the CEC chapter, pick your circle. Karma starts the moment you show up.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href={chapter.joinUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#111110] text-white px-8 py-4 text-sm font-semibold transition-all duration-200 hover:bg-[#2a2a28] hover:shadow-[0_8px_32px_-6px_rgba(0,0,0,0.5)] font-mono uppercase tracking-wider"
-              >
-                Create your account
-                <ExternalLink size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-              </a>
-              <a
-                href={chapter.discord}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#111110]/20 px-8 py-4 text-sm font-mono uppercase tracking-wider text-[#111110]/60 transition-all duration-200 hover:border-[#111110]/40 hover:text-[#111110]"
-              >
-                Join Discord
-              </a>
+
+            {/* Right: The Crafted CEC Builder Pass Card */}
+            <div className="relative rounded-2xl bg-[#161614] border border-white/10 p-6 sm:p-7 shadow-xl flex flex-col justify-between">
+              {/* Pass Header */}
+              <div className="flex items-center justify-between pb-3.5 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#BEFF62] animate-pulse" />
+                  <span className="font-mono text-xs tracking-wider text-white font-bold uppercase">
+                    CEC Builder Pass
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] text-[#BEFF62] bg-[#BEFF62]/15 border border-[#BEFF62]/30 px-2.5 py-0.5 rounded-full font-semibold">
+                  BATCH '25
+                </span>
+              </div>
+
+              {/* Authentic Variable-Width SVG Barcode */}
+              <div className="flex items-center justify-center gap-[3px] py-4 opacity-30 select-none" aria-hidden="true">
+                {[2, 1, 3, 1, 4, 1, 2, 3, 1, 2, 4, 1, 3, 2, 1, 3, 2, 4, 1, 2, 3, 1, 4, 2].map((w, i) => (
+                  <div key={i} className="h-6 bg-white rounded-full" style={{ width: `${w * 1.5}px` }} />
+                ))}
+              </div>
+
+              {/* 3 Structured Step Cards */}
+              <div className="space-y-2.5 my-1">
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/[0.06]">
+                  <span className="font-mono text-[10px] font-bold bg-[#BEFF62] text-[#111110] px-2 py-0.5 rounded shrink-0">
+                    01
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-sans font-semibold text-white leading-tight">Create Account</p>
+                    <p className="font-mono text-[11px] text-[#BEFF62]/80 mt-0.5 truncate">app.mulearn.org</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/[0.06]">
+                  <span className="font-mono text-[10px] font-bold bg-[#BEFF62] text-[#111110] px-2 py-0.5 rounded shrink-0">
+                    02
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-sans font-semibold text-white leading-tight">Connect Campus Chapter</p>
+                    <p className="font-sans text-[11px] text-white/50 mt-0.5 truncate">College of Engineering Chengannur</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/[0.06]">
+                  <span className="font-mono text-[10px] font-bold bg-[#BEFF62] text-[#111110] px-2 py-0.5 rounded shrink-0">
+                    03
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-sans font-semibold text-white leading-tight">Pick Circle & Ship</p>
+                    <p className="font-sans text-[11px] text-white/50 mt-0.5 truncate">Push first commit to claim Karma</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pass Footer */}
+              <div className="mt-4 pt-3.5 border-t border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-1.5 font-mono text-[10px] text-white/60 uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62]" />
+                  <span>137+ Active Builders</span>
+                </div>
+
+                <a
+                  href={chapter.linktree}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 font-mono text-[11px] text-[#BEFF62] uppercase tracking-wider font-semibold hover:underline group/link"
+                >
+                  <span>All Links</span>
+                  <ArrowRight size={12} className="transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
