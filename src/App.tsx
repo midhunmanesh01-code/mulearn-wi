@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
-import { motion, useInView } from 'motion/react'
+import { motion, useInView, AnimatePresence } from 'motion/react'
 import {
   ExternalLink,
   ArrowRight,
@@ -575,6 +575,23 @@ const Community: React.FC = () => (
 // ─── Learning Circles ─────────────────────────────────────────────────────────
 const Circles: React.FC = () => {
   const [activeCircle, setActiveCircle] = useState('01')
+  const hoverTimer = useRef<number | null>(null)
+
+  const handleHover = (id: string) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    hoverTimer.current = window.setTimeout(() => {
+      setActiveCircle(id)
+    }, 55)
+  }
+
+  const handleLeave = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+  }
+
+  const handleClick = (id: string) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    setActiveCircle(id)
+  }
 
   return (
     <section id="circles" className="bg-[#FAFAF8] border-b border-black/[0.08] relative">
@@ -600,140 +617,156 @@ const Circles: React.FC = () => {
           </div>
         </FadeIn>
 
-        {/* Desktop: Expanding Horizontal Accordion Deck */}
-        <FadeIn delay={0.1} className="hidden lg:flex gap-3.5 h-[500px]">
-          {circles.map((c) => {
-            const isSelected = activeCircle === c.id
+        {/* Desktop: Expanding Horizontal Accordion Deck with Silky Quintic Easing */}
+        <FadeIn delay={0.1}>
+          <div className="hidden lg:flex gap-3.5 h-[500px]" onMouseLeave={handleLeave}>
+            {circles.map((c) => {
+              const isSelected = activeCircle === c.id
 
-            return (
-              <motion.div
-                key={c.id}
-                layout
-                onClick={() => setActiveCircle(c.id)}
-                onMouseEnter={() => setActiveCircle(c.id)}
-                transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-                className={`relative rounded-2xl cursor-pointer overflow-hidden transition-all duration-300 flex flex-col justify-between ${
-                  isSelected
-                    ? 'flex-[3.5] bg-white border border-black/10 p-8 sm:p-9 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.08)]'
-                    : 'flex-1 bg-[#F2F2EE] hover:bg-[#EBEBE5] border border-black/[0.06] p-6'
-                }`}
-              >
-                {/* Top lime accent on active */}
-                {isSelected && (
-                  <motion.div
-                    layoutId="circle-active-bar"
-                    className="absolute top-0 left-0 right-0 h-1 bg-[#BEFF62]"
-                  />
-                )}
+              return (
+                <motion.div
+                  key={c.id}
+                  layout
+                  onClick={() => handleClick(c.id)}
+                  onMouseEnter={() => handleHover(c.id)}
+                  transition={{
+                    layout: { duration: 0.52, ease: [0.16, 1, 0.3, 1] },
+                  }}
+                  className={`relative rounded-2xl cursor-pointer overflow-hidden transition-colors duration-200 flex flex-col justify-between ${
+                    isSelected
+                      ? 'flex-[3.5] bg-white border border-black/10 p-8 sm:p-9 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.08)]'
+                      : 'flex-1 bg-[#F2F2EE] hover:bg-[#EBEBE5] border border-black/[0.06] p-6'
+                  }`}
+                >
+                  {/* Top lime accent on active */}
+                  {isSelected && (
+                    <motion.div
+                      layoutId="circle-active-bar"
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                      className="absolute top-0 left-0 right-0 h-1 bg-[#BEFF62]"
+                    />
+                  )}
 
-                {/* Collapsed State: Vertical Typography */}
-                {!isSelected ? (
-                  <div className="h-full flex flex-col justify-between items-center py-2 select-none">
-                    <span className="font-mono text-xs font-semibold text-[#111110]/40">
-                      {c.id}
-                    </span>
-
-                    <span className="font-serif text-2xl text-[#111110] tracking-tight whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
-                      {c.name}
-                    </span>
-
-                    <span className="font-mono text-[10px] text-[#111110]/50 tracking-wider">
-                      {c.members}p
-                    </span>
-                  </div>
-                ) : (
-                  /* Expanded Active State: Deep Editorial Showcase */
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.25 }}
-                    className="h-full flex flex-col justify-between"
-                  >
-                    <div>
-                      {/* Top bar */}
-                      <div className="flex items-center justify-between pb-5 border-b border-black/[0.06]">
-                        <div className="flex items-center gap-2.5">
-                          <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#111110] text-[#BEFF62]">
-                            {c.id}
-                          </span>
-                          <span className="font-mono text-[10px] tracking-[0.2em] text-[#9A9A95] uppercase font-semibold">
-                            {c.track}
-                          </span>
-                        </div>
-
-                        <div className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#111110]/70 bg-[#FAFAF8] border border-black/[0.06] px-3 py-1 rounded-full">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/10" />
-                          <span>{c.members} active builders</span>
-                        </div>
-                      </div>
-
-                      {/* Main Title & Tagline */}
-                      <div className="mt-6">
-                        <h3 className="font-serif text-3xl sm:text-4xl text-[#111110] font-normal tracking-tight">
-                          {c.name}
-                        </h3>
-                        <p className="font-sans text-xs text-[#111110]/50 font-medium tracking-wide mt-1">
-                          {c.tagline}
-                        </p>
-                        <p className="font-sans text-sm text-[#3A3A37]/80 leading-relaxed mt-4 max-w-xl">
-                          {c.blurb}
-                        </p>
-                      </div>
-
-                      {/* Info grid */}
-                      <div className="grid grid-cols-2 gap-6 mt-7 pt-5 border-t border-black/[0.06]">
-                        <div>
-                          <span className="block font-mono text-[9px] uppercase tracking-wider text-[#9A9A95] font-semibold mb-1">
-                            Primary Output
-                          </span>
-                          <p className="font-sans text-xs sm:text-sm text-[#111110]/85 font-medium leading-snug">
-                            {c.output}
-                          </p>
-                        </div>
-                        <div>
-                          <span className="block font-mono text-[9px] uppercase tracking-wider text-[#9A9A95] font-semibold mb-1">
-                            Cohort Rhythm
-                          </span>
-                          <p className="font-sans text-xs sm:text-sm text-[#111110]/85 font-medium leading-snug">
-                            {c.cadence}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bottom row: Stack Tags + Shimmer Join Button */}
-                    <div className="pt-6 border-t border-black/[0.06] flex items-center justify-between gap-4">
-                      <div className="flex flex-wrap gap-1.5">
-                        {c.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="font-mono text-[9px] tracking-wider text-[#111110]/70 bg-[#FAFAF8] border border-black/[0.06] rounded px-2 py-1 uppercase"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <a
-                        href={chapter.joinUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="group/btn relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111110] text-[#FAFAF8] font-sans font-medium text-xs tracking-wide shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out shrink-0"
+                  <AnimatePresence mode="wait">
+                    {/* Collapsed State: Vertical Typography */}
+                    {!isSelected ? (
+                      <motion.div
+                        key={`collapsed-${c.id}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        className="h-full flex flex-col justify-between items-center py-2 select-none"
                       >
-                        <span className="relative z-10 flex items-center gap-1.5">
-                          Join {c.name}
+                        <span className="font-mono text-xs font-semibold text-[#111110]/40">
+                          {c.id}
                         </span>
-                        <ArrowRight className="relative z-10 w-3.5 h-3.5 text-[#BEFF62] transition-transform duration-300 ease-out group-hover/btn:translate-x-1" />
-                      </a>
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
-            )
-          })}
+
+                        <span className="font-serif text-2xl text-[#111110] tracking-tight whitespace-nowrap [writing-mode:vertical-rl] rotate-180">
+                          {c.name}
+                        </span>
+
+                        <span className="font-mono text-[10px] text-[#111110]/50 tracking-wider">
+                          {c.members}p
+                        </span>
+                      </motion.div>
+                    ) : (
+                      /* Expanded Active State: Deep Editorial Showcase */
+                      <motion.div
+                        key={`expanded-${c.id}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.22, ease: 'easeOut' }}
+                        className="h-full flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Top bar */}
+                          <div className="flex items-center justify-between pb-5 border-b border-black/[0.06]">
+                            <div className="flex items-center gap-2.5">
+                              <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-[#111110] text-[#BEFF62]">
+                                {c.id}
+                              </span>
+                              <span className="font-mono text-[10px] tracking-[0.2em] text-[#9A9A95] uppercase font-semibold">
+                                {c.track}
+                              </span>
+                            </div>
+
+                            <div className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#111110]/70 bg-[#FAFAF8] border border-black/[0.06] px-3 py-1 rounded-full">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/10" />
+                              <span>{c.members} active builders</span>
+                            </div>
+                          </div>
+
+                          {/* Main Title & Tagline */}
+                          <div className="mt-6">
+                            <h3 className="font-serif text-3xl sm:text-4xl text-[#111110] font-normal tracking-tight">
+                              {c.name}
+                            </h3>
+                            <p className="font-sans text-xs text-[#111110]/50 font-medium tracking-wide mt-1">
+                              {c.tagline}
+                            </p>
+                            <p className="font-sans text-sm text-[#3A3A37]/80 leading-relaxed mt-4 max-w-xl">
+                              {c.blurb}
+                            </p>
+                          </div>
+
+                          {/* Info grid */}
+                          <div className="grid grid-cols-2 gap-6 mt-7 pt-5 border-t border-black/[0.06]">
+                            <div>
+                              <span className="block font-mono text-[9px] uppercase tracking-wider text-[#9A9A95] font-semibold mb-1">
+                                Primary Output
+                              </span>
+                              <p className="font-sans text-xs sm:text-sm text-[#111110]/85 font-medium leading-snug">
+                                {c.output}
+                              </p>
+                            </div>
+                            <div>
+                              <span className="block font-mono text-[9px] uppercase tracking-wider text-[#9A9A95] font-semibold mb-1">
+                                Cohort Rhythm
+                              </span>
+                              <p className="font-sans text-xs sm:text-sm text-[#111110]/85 font-medium leading-snug">
+                                {c.cadence}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom row: Stack Tags + Shimmer Join Button */}
+                        <div className="pt-6 border-t border-black/[0.06] flex items-center justify-between gap-4">
+                          <div className="flex flex-wrap gap-1.5">
+                            {c.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="font-mono text-[9px] tracking-wider text-[#111110]/70 bg-[#FAFAF8] border border-black/[0.06] rounded px-2 py-1 uppercase"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          <a
+                            href={chapter.joinUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="group/btn relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#111110] text-[#FAFAF8] font-sans font-medium text-xs tracking-wide shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out shrink-0"
+                          >
+                            <span className="relative z-10 flex items-center gap-1.5">
+                              Join {c.name}
+                            </span>
+                            <ArrowRight className="relative z-10 w-3.5 h-3.5 text-[#BEFF62] transition-transform duration-300 ease-out group-hover/btn:translate-x-1" />
+                          </a>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )
+            })}
+          </div>
         </FadeIn>
 
-        {/* Mobile: Sleek Vertical Accordion */}
+        {/* Mobile: Sleek Vertical Accordion with AnimatePresence */}
         <div className="lg:hidden space-y-3">
           {circles.map((c) => {
             const isSelected = activeCircle === c.id
@@ -741,8 +774,8 @@ const Circles: React.FC = () => {
             return (
               <div
                 key={c.id}
-                onClick={() => setActiveCircle(c.id)}
-                className={`rounded-2xl transition-all duration-300 overflow-hidden border ${
+                onClick={() => handleClick(c.id)}
+                className={`rounded-2xl transition-colors duration-200 overflow-hidden border ${
                   isSelected
                     ? 'bg-white border-black/15 shadow-md p-6'
                     : 'bg-[#F2F2EE] border-black/[0.06] p-4 cursor-pointer'
@@ -757,49 +790,56 @@ const Circles: React.FC = () => {
                     <span className="font-mono text-xs text-[#9A9A95]">{c.members} peers</span>
                   </div>
                 ) : (
-                  <div>
-                    <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
-                      <span className="font-mono text-[9px] tracking-widest text-[#9A9A95] uppercase font-bold">
-                        {c.track}
-                      </span>
-                      <span className="font-mono text-xs text-[#111110] font-medium">
-                        {c.members} builders
-                      </span>
-                    </div>
-
-                    <h3 className="font-serif text-2xl text-[#111110] font-normal mt-3">
-                      {c.name}
-                    </h3>
-                    <p className="font-sans text-xs text-[#3A3A37]/75 leading-relaxed mt-2">
-                      {c.blurb}
-                    </p>
-
-                    <div className="mt-4 pt-3 border-t border-black/[0.06] space-y-2">
-                      <div className="text-xs font-sans text-[#111110]/80">
-                        <span className="font-mono text-[9px] uppercase text-[#9A9A95] block">Rhythm:</span>
-                        {c.cadence}
-                      </div>
-                      <div className="flex flex-wrap gap-1 pt-1">
-                        {c.tags.map((t) => (
-                          <span
-                            key={t}
-                            className="font-mono text-[9px] text-[#111110]/60 bg-[#FAFAF8] border border-black/[0.06] px-1.5 py-0.5 rounded"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <a
-                      href={chapter.joinUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 font-mono text-xs text-[#111110] font-semibold uppercase tracking-wider"
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      Join Circle <ArrowRight size={12} className="text-[#111110]" />
-                    </a>
-                  </div>
+                      <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
+                        <span className="font-mono text-[9px] tracking-widest text-[#9A9A95] uppercase font-bold">
+                          {c.track}
+                        </span>
+                        <span className="font-mono text-xs text-[#111110] font-medium">
+                          {c.members} builders
+                        </span>
+                      </div>
+
+                      <h3 className="font-serif text-2xl text-[#111110] font-normal mt-3">
+                        {c.name}
+                      </h3>
+                      <p className="font-sans text-xs text-[#3A3A37]/75 leading-relaxed mt-2">
+                        {c.blurb}
+                      </p>
+
+                      <div className="mt-4 pt-3 border-t border-black/[0.06] space-y-2">
+                        <div className="text-xs font-sans text-[#111110]/80">
+                          <span className="font-mono text-[9px] uppercase text-[#9A9A95] block">Rhythm:</span>
+                          {c.cadence}
+                        </div>
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {c.tags.map((t) => (
+                            <span
+                              key={t}
+                              className="font-mono text-[9px] text-[#111110]/60 bg-[#FAFAF8] border border-black/[0.06] px-1.5 py-0.5 rounded"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <a
+                        href={chapter.joinUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 inline-flex items-center gap-2 font-mono text-xs text-[#111110] font-semibold uppercase tracking-wider"
+                      >
+                        Join Circle <ArrowRight size={12} className="text-[#111110]" />
+                      </a>
+                    </motion.div>
+                  </AnimatePresence>
                 )}
               </div>
             )
