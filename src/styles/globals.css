@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #f5f7fa;
+  --color-night: #0b1f3f;
+  --color-navy: #102b52;
+  --color-violet: #8b5cf6;
+  --color-cyan: #59d6e8;
+  --color-gold: #ffc928;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-heading: "Oswald", sans-serif;
+}
+
+html, body {
+  background: #0b1f3f; color: #f5f7fa; color-scheme: dark;
+  font-family: var(--font-sans); -webkit-tap-highlight-color: transparent;
+  scrollbar-width: none; overflow-x: clip;
+}
+::-webkit-scrollbar { display: none; }
+:focus-visible { outline: 2px solid #59d6e8; outline-offset: 3px; }
+
+/* Premium glass: frosted blur, bright top edge, cursor-follow spotlight */
+.glass {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 24px 60px -28px rgba(0,0,0,.7);
+  --mx: 50%; --my: 0%;
+}
+.glass::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .35s;
+  background: radial-gradient(360px circle at var(--mx) var(--my), rgba(139,92,246,.32), rgba(89,214,232,.10) 45%, transparent 70%);
+}
+.glass:hover::before { opacity: 1; }
+
+.shimmer {
+  background: linear-gradient(110deg,#fff 20%,#c4b5fd 45%,#59d6e8 60%,#fff 90%);
+  background-size: 250% 100%; -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; animation: shimmer 2.4s ease-in-out infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0 } 100% { background-position: -100% 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
