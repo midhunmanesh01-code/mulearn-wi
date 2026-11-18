@@ -64,199 +64,235 @@ const Label: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 )
 
 // ─── Hero ──────────────────────────────────────────────────────────────────────
-const Hero: React.FC = () => (
-  <section id="top" className="relative overflow-hidden bg-[#FAFAF8]">
-    {/* Fine grid */}
-    <div className="grid-bg absolute inset-0 pointer-events-none opacity-100" aria-hidden="true" />
+const Hero: React.FC<{ isReady?: boolean }> = ({ isReady = false }) => {
+  const [fallbackStarted, setFallbackStarted] = useState(false)
+  const hasStarted = isReady || fallbackStarted
 
-    {/* Very subtle lime glow top-center */}
-    <div
-      className="absolute left-1/2 -top-20 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
-      style={{ background: 'radial-gradient(ellipse at top, rgba(190,255,98,0.18) 0%, transparent 65%)' }}
-      aria-hidden="true"
-    />
+  useEffect(() => {
+    if (!isReady) {
+      const timer = setTimeout(() => {
+        setFallbackStarted(true)
+      }, 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [isReady])
 
-    <div className="relative mx-auto max-w-6xl px-6 sm:px-10 pt-28 sm:pt-32 pb-16 min-h-[100dvh] flex flex-col justify-between">
-      <div>
-        {/* Eyebrow */}
+  return (
+    <section id="top" className="relative overflow-hidden bg-[#FAFAF8]">
+      {/* Fine grid */}
+      <div className="grid-bg absolute inset-0 pointer-events-none opacity-100" aria-hidden="true" />
+
+      {/* Very subtle lime glow top-center */}
+      <div
+        className="absolute left-1/2 -top-20 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at top, rgba(190,255,98,0.18) 0%, transparent 65%)' }}
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-6xl px-6 sm:px-10 pt-28 sm:pt-32 pb-16 min-h-[100dvh] flex flex-col justify-between">
+        <div>
+          {/* Eyebrow */}
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={hasStarted ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="inline-flex items-center gap-2.5 border border-black/[0.08] rounded-full px-4 py-2 mb-12 bg-white/70 backdrop-blur-sm"
+          >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="ping-slow absolute inline-flex h-full w-full rounded-full bg-[#9AE637]" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#9AE637]" />
+            </span>
+            <span className="font-mono text-[10px] tracking-widest text-[#9A9A95] uppercase">
+              GTech µLearn · Campus Chapter · CEC CHN
+            </span>
+          </motion.div>
+
+          {/* Headline — massive serif with isolated word-by-word fluid wave lift */}
+          <h1 className="font-serif text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight mb-2 select-none">
+            {/* First line: Break the syllabus. */}
+            {hasStarted ? (
+              <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pb-1">
+                <SplitText
+                  tag="span"
+                  text="Break"
+                  className="text-[#111110] inline-block"
+                  effect="rise"
+                  splitType="chars"
+                  delay={35}
+                  duration={0.9}
+                  trigger="load"
+                  hoverEffect="lift"
+                />
+                <SplitText
+                  tag="span"
+                  text="the"
+                  className="text-[#111110] inline-block"
+                  effect="rise"
+                  splitType="chars"
+                  delay={35}
+                  duration={0.9}
+                  startDelay={80}
+                  trigger="load"
+                  hoverEffect="lift"
+                />
+                <SplitText
+                  tag="span"
+                  text="syllabus."
+                  className="text-[#111110] inline-block"
+                  effect="rise"
+                  splitType="chars"
+                  delay={35}
+                  duration={0.9}
+                  startDelay={160}
+                  trigger="load"
+                  hoverEffect="lift"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pb-1 opacity-0 pointer-events-none select-none">
+                <span className="text-[#111110] inline-block">Break</span>
+                <span className="text-[#111110] inline-block">the</span>
+                <span className="text-[#111110] inline-block">syllabus.</span>
+              </div>
+            )}
+
+            {/* Second line: Ship in public. (Natural muted tone, stays in its tone on hover) */}
+            {hasStarted ? (
+              <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pt-1 italic text-[#111110]/25">
+                <SplitText
+                  tag="span"
+                  text="Ship"
+                  className="text-[#111110]/25 inline-block"
+                  effect="rise"
+                  splitType="chars"
+                  delay={35}
+                  duration={0.9}
+                  startDelay={240}
+                  trigger="load"
+                  hoverEffect="lift"
+                />
+                <SplitText
+                  tag="span"
+                  text="in"
+                  className="text-[#111110]/25 inline-block"
+                  effect="rise"
+                  splitType="chars"
+                  delay={35}
+                  duration={0.9}
+                  startDelay={300}
+                  trigger="load"
+                  hoverEffect="lift"
+                />
+                <SplitText
+                  tag="span"
+                  text="public."
+                  className="text-[#111110]/25 inline-block"
+                  effect="rise"
+                  splitType="chars"
+                  delay={35}
+                  duration={0.9}
+                  startDelay={360}
+                  trigger="load"
+                  hoverEffect="lift"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pt-1 italic text-[#111110]/25 opacity-0 pointer-events-none select-none">
+                <span className="text-[#111110]/25 inline-block">Ship</span>
+                <span className="text-[#111110]/25 inline-block">in</span>
+                <span className="text-[#111110]/25 inline-block">public.</span>
+              </div>
+            )}
+          </h1>
+
+          {/* Lime highlight bar under first line */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={hasStarted ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+            transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformOrigin: 'left' }}
+            className="mt-3 h-1.5 w-32 bg-[#BEFF62] rounded-full"
+          />
+
+          {/* Sub + CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={hasStarted ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-10 flex flex-col sm:flex-row sm:items-end gap-8 sm:gap-16"
+          >
+            <p className="max-w-xs text-sm text-[#3A3A37]/60 leading-relaxed">
+              {chapter.tagline}
+            </p>
+            <div className="flex flex-wrap gap-3.5">
+              <a
+                href={chapter.joinUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group relative overflow-hidden flex items-center gap-2.5 rounded-full bg-[#111110] text-white px-7 py-3.5 text-sm font-bold font-mono uppercase tracking-wider shadow-[0_4px_20px_-4px_rgba(0,0,0,0.25)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:transition-transform before:duration-700 before:ease-out"
+              >
+                <span className="relative z-10 inline-block transition-transform duration-300 group-hover:scale-[1.02]">
+                  Join the chapter
+                </span>
+                <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
+              </a>
+              <a
+                href="#circles"
+                className="group relative overflow-hidden flex items-center gap-2.5 rounded-full border border-black/[0.12] hover:border-[#111110] bg-white text-[#111110] px-7 py-3.5 text-sm font-bold font-mono uppercase tracking-wider shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_24px_-4px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-[#BEFF62]/35 before:to-transparent before:transition-transform before:duration-700 before:ease-out"
+              >
+                <span className="relative z-10 inline-block transition-transform duration-300 group-hover:scale-[1.02]">
+                  Explore circles
+                </span>
+                <ArrowRight className="relative z-10 w-4 h-4 text-[#9A9A95] transition-all duration-300 ease-out group-hover:translate-x-1.5 group-hover:text-[#111110]" />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Stats — anchored to bottom */}
         <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="inline-flex items-center gap-2.5 border border-black/[0.08] rounded-full px-4 py-2 mb-12 bg-white/70 backdrop-blur-sm"
+          initial={{ opacity: 0, y: 12 }}
+          animate={hasStarted ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-14 sm:mt-18"
         >
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="ping-slow absolute inline-flex h-full w-full rounded-full bg-[#9AE637]" />
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#9AE637]" />
-          </span>
-          <span className="font-mono text-[10px] tracking-widest text-[#9A9A95] uppercase">
-            GTech µLearn · Campus Chapter · CEC CHN
-          </span>
-        </motion.div>
+          <div className="border-t border-black/[0.07] pt-8 sm:pt-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-8 sm:gap-x-12 lg:gap-x-16">
+              {stats.map((s, idx) => (
+                <div key={s.label} className="group">
+                  {/* Number in Hero serif */}
+                  <div>
+                    {hasStarted ? (
+                      <FlickerNumber
+                        value={s.value}
+                        delay={idx * 50 + 200}
+                        className="font-serif text-[2.6rem] sm:text-[3.25rem] lg:text-[3.75rem] font-normal tracking-tight leading-[0.9] text-[#111110]"
+                      />
+                    ) : (
+                      <span className="font-serif text-[2.6rem] sm:text-[3.25rem] lg:text-[3.75rem] font-normal tracking-tight leading-[0.9] text-[#111110] opacity-0 pointer-events-none select-none">
+                        {s.value}
+                      </span>
+                    )}
+                  </div>
 
-        {/* Headline — massive serif with isolated word-by-word fluid wave lift */}
-        <h1 className="font-serif text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight mb-2 select-none">
-          {/* First line: Break the syllabus. */}
-          <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pb-1">
-            <SplitText
-              tag="span"
-              text="Break"
-              className="text-[#111110] inline-block"
-              effect="rise"
-              splitType="chars"
-              delay={35}
-              duration={0.9}
-              trigger="load"
-              hoverEffect="lift"
-            />
-            <SplitText
-              tag="span"
-              text="the"
-              className="text-[#111110] inline-block"
-              effect="rise"
-              splitType="chars"
-              delay={35}
-              duration={0.9}
-              startDelay={80}
-              trigger="load"
-              hoverEffect="lift"
-            />
-            <SplitText
-              tag="span"
-              text="syllabus."
-              className="text-[#111110] inline-block"
-              effect="rise"
-              splitType="chars"
-              delay={35}
-              duration={0.9}
-              startDelay={160}
-              trigger="load"
-              hoverEffect="lift"
-            />
-          </div>
+                  {/* Label in Hero serif */}
+                  <h4 className="font-serif text-lg sm:text-xl text-[#111110] tracking-tight leading-snug mt-2.5">
+                    {s.label}
+                  </h4>
 
-          {/* Second line: Ship in public. (Natural muted tone, stays in its tone on hover) */}
-          <div className="flex flex-wrap items-baseline gap-x-[0.28em] overflow-visible pt-1 italic text-[#111110]/25">
-            <SplitText
-              tag="span"
-              text="Ship"
-              className="text-[#111110]/25 inline-block"
-              effect="rise"
-              splitType="chars"
-              delay={35}
-              duration={0.9}
-              startDelay={240}
-              trigger="load"
-              hoverEffect="lift"
-            />
-            <SplitText
-              tag="span"
-              text="in"
-              className="text-[#111110]/25 inline-block"
-              effect="rise"
-              splitType="chars"
-              delay={35}
-              duration={0.9}
-              startDelay={300}
-              trigger="load"
-              hoverEffect="lift"
-            />
-            <SplitText
-              tag="span"
-              text="public."
-              className="text-[#111110]/25 inline-block"
-              effect="rise"
-              splitType="chars"
-              delay={35}
-              duration={0.9}
-              startDelay={360}
-              trigger="load"
-              hoverEffect="lift"
-            />
-          </div>
-        </h1>
-
-        {/* Lime highlight bar under first line */}
-        <motion.div
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformOrigin: 'left' }}
-          className="mt-3 h-1.5 w-32 bg-[#BEFF62] rounded-full"
-        />
-
-        {/* Sub + CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-10 flex flex-col sm:flex-row sm:items-end gap-8 sm:gap-16"
-        >
-          <p className="max-w-xs text-sm text-[#3A3A37]/60 leading-relaxed">
-            {chapter.tagline}
-          </p>
-          <div className="flex flex-wrap gap-3.5">
-            <a
-              href={chapter.joinUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="group relative overflow-hidden flex items-center gap-2.5 rounded-full bg-[#111110] text-white px-7 py-3.5 text-sm font-bold font-mono uppercase tracking-wider shadow-[0_4px_20px_-4px_rgba(0,0,0,0.25)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:transition-transform before:duration-700 before:ease-out"
-            >
-              <span className="relative z-10 inline-block transition-transform duration-300 group-hover:scale-[1.02]">
-                Join the chapter
-              </span>
-              <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
-            </a>
-            <a
-              href="#circles"
-              className="group relative overflow-hidden flex items-center gap-2.5 rounded-full border border-black/[0.12] hover:border-[#111110] bg-white text-[#111110] px-7 py-3.5 text-sm font-bold font-mono uppercase tracking-wider shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_24px_-4px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-[#BEFF62]/35 before:to-transparent before:transition-transform before:duration-700 before:ease-out"
-            >
-              <span className="relative z-10 inline-block transition-transform duration-300 group-hover:scale-[1.02]">
-                Explore circles
-              </span>
-              <ArrowRight className="relative z-10 w-4 h-4 text-[#9A9A95] transition-all duration-300 ease-out group-hover:translate-x-1.5 group-hover:text-[#111110]" />
-            </a>
+                  {/* Subtitle in clean light sans */}
+                  <p className="font-sans text-[11px] sm:text-xs text-[#3A3A37]/55 mt-0.5 leading-normal font-normal">
+                    {s.sub}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
-
-      {/* Stats — anchored to bottom */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-        className="mt-14 sm:mt-18"
-      >
-        <div className="border-t border-black/[0.07] pt-8 sm:pt-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-8 sm:gap-x-12 lg:gap-x-16">
-            {stats.map((s, idx) => (
-              <div key={s.label} className="group">
-                {/* Number in Hero serif */}
-                <div>
-                  <FlickerNumber
-                    value={s.value}
-                    delay={idx * 50}
-                    className="font-serif text-[2.6rem] sm:text-[3.25rem] lg:text-[3.75rem] font-normal tracking-tight leading-[0.9] text-[#111110]"
-                  />
-                </div>
-
-                {/* Label in Hero serif */}
-                <h4 className="font-serif text-lg sm:text-xl text-[#111110] tracking-tight leading-snug mt-2.5">
-                  {s.label}
-                </h4>
-
-                {/* Subtitle in clean light sans */}
-                <p className="font-sans text-[11px] sm:text-xs text-[#3A3A37]/55 mt-0.5 leading-normal font-normal">
-                  {s.sub}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  </section>
-)
+    </section>
+  )
+}
 
 // ─── Marquee ticker ────────────────────────────────────────────────────────────
 const TICKER = [
@@ -1655,8 +1691,13 @@ const Footer: React.FC = () => {
 
 // ─── App root ──────────────────────────────────────────────────────────────────
 export const App: React.FC = () => {
+  const [isReady, setIsReady] = useState(false)
+
   useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIsReady(true)
+      return
+    }
     const lenis = new Lenis()
     let id = requestAnimationFrame(function raf(t: number) {
       lenis.raf(t)
@@ -1667,10 +1708,10 @@ export const App: React.FC = () => {
 
   return (
     <div className="paper-texture relative min-h-[100dvh] overflow-x-clip bg-[#FAFAF8] font-sans selection:bg-[#BEFF62] selection:text-[#111110]">
-      <Preloader />
+      <Preloader onComplete={() => setIsReady(true)} />
       <Navbar />
       <main>
-        <Hero />
+        <Hero isReady={isReady} />
         <Marquee />
         <Community />
         <Circles />
