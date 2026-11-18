@@ -1540,7 +1540,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 sm:px-10 pt-16 sm:pt-20 pb-10 sm:pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 sm:pb-16 border-b border-white/[0.08]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 sm:pb-16 border-b border-white/[0.08]">
           {/* Column 1: Brand & Chapter Identity */}
           <div className="lg:col-span-6 flex flex-col justify-between">
             <div>
@@ -1596,63 +1596,66 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Column 2: Learning Circles */}
-          <div className="lg:col-span-3 space-y-3">
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[#BEFF62] font-bold flex items-center gap-2 mb-4">
-              <span className="w-1.5 h-1.5 bg-[#BEFF62] rounded-full shadow-[0_0_8px_#BEFF62]" />
-              <span>CIRCLES</span>
-            </div>
-            <div className="flex flex-col">
-              {FOOTER_CIRCLES.map((circle) => (
-                <a
-                  key={circle.id}
-                  href={circle.href}
-                  className="group flex items-center justify-between py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
-                >
-                  <div className="flex items-center gap-2.5 transform-gpu group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-200 shadow-[0_0_8px_#BEFF62] -mr-1 group-hover:mr-0" />
-                    <span className="text-xs sm:text-sm text-white/70 group-hover:text-white transition-colors">
-                      {circle.name}
+          {/* Columns 2 & 3: Mobile 2-column layout (Circles on Left, Explore on Right) */}
+          <div className="grid grid-cols-2 gap-6 sm:gap-10 lg:col-span-6">
+            {/* Left: Learning Circles */}
+            <div className="space-y-3">
+              <div className="font-mono text-xs uppercase tracking-[0.2em] text-[#BEFF62] font-bold flex items-center gap-2 mb-4">
+                <span className="w-1.5 h-1.5 bg-[#BEFF62] rounded-full shadow-[0_0_8px_#BEFF62]" />
+                <span>CIRCLES</span>
+              </div>
+              <div className="flex flex-col">
+                {FOOTER_CIRCLES.map((circle) => (
+                  <a
+                    key={circle.id}
+                    href={circle.href}
+                    className="group flex items-center justify-between py-2 sm:py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
+                  >
+                    <div className="flex items-center gap-2 transform-gpu group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-200 shadow-[0_0_8px_#BEFF62] -mr-1 group-hover:mr-0 shrink-0" />
+                      <span className="text-xs sm:text-sm text-white/70 group-hover:text-white transition-colors truncate">
+                        {circle.name}
+                      </span>
+                    </div>
+                    <span className="hidden sm:inline font-mono text-[10px] text-white/30 group-hover:text-[#BEFF62] transition-colors shrink-0">
+                      {circle.count}
                     </span>
-                  </div>
-                  <span className="font-mono text-[10px] text-white/30 group-hover:text-[#BEFF62] transition-colors">
-                    {circle.count}
-                  </span>
-                </a>
-              ))}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Column 3: Platform Navigation */}
-          <div className="lg:col-span-3 space-y-3">
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[#BEFF62] font-bold flex items-center gap-2 mb-4">
-              <span className="w-1.5 h-1.5 bg-[#BEFF62] rounded-full shadow-[0_0_8px_#BEFF62]" />
-              <span>EXPLORE</span>
-            </div>
-            <div className="flex flex-col">
-              {FOOTER_NAV.map((nav) => (
+            {/* Right: Platform Navigation */}
+            <div className="space-y-3">
+              <div className="font-mono text-xs uppercase tracking-[0.2em] text-[#BEFF62] font-bold flex items-center gap-2 mb-4">
+                <span className="w-1.5 h-1.5 bg-[#BEFF62] rounded-full shadow-[0_0_8px_#BEFF62]" />
+                <span>EXPLORE</span>
+              </div>
+              <div className="flex flex-col">
+                {FOOTER_NAV.map((nav) => (
+                  <a
+                    key={nav.label}
+                    href={nav.href}
+                    className="group flex items-center justify-between py-2 sm:py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
+                  >
+                    <span className="text-xs sm:text-sm text-white/60 group-hover:text-white group-hover:translate-x-1.5 transition-all duration-200 ease-out truncate pr-1">
+                      {nav.label}
+                    </span>
+                    <ArrowRight className="w-3.5 h-3.5 text-white/20 group-hover:text-[#BEFF62] group-hover:translate-x-1 transition-all duration-200 ease-out shrink-0" />
+                  </a>
+                ))}
                 <a
-                  key={nav.label}
-                  href={nav.href}
-                  className="group flex items-center justify-between py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
+                  href={chapter.joinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-between py-2 sm:py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
                 >
-                  <span className="text-xs sm:text-sm text-white/60 group-hover:text-white group-hover:translate-x-1.5 transition-all duration-200 ease-out">
-                    {nav.label}
+                  <span className="text-xs sm:text-sm text-[#BEFF62]/80 group-hover:text-[#BEFF62] group-hover:translate-x-1.5 transition-all duration-200 ease-out truncate pr-1">
+                    µLearn App
                   </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-white/20 group-hover:text-[#BEFF62] group-hover:translate-x-1 transition-all duration-200 ease-out" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#BEFF62]/60 group-hover:text-[#BEFF62] transition-colors shrink-0" />
                 </a>
-              ))}
-              <a
-                href={chapter.joinUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex items-center justify-between py-2.5 border-b border-white/[0.06] hover:border-[#BEFF62]/30 transition-all duration-200"
-              >
-                <span className="text-xs sm:text-sm text-[#BEFF62]/80 group-hover:text-[#BEFF62] group-hover:translate-x-1.5 transition-all duration-200 ease-out">
-                  µLearn App
-                </span>
-                <ExternalLink className="w-3.5 h-3.5 text-[#BEFF62]/60 group-hover:text-[#BEFF62] transition-colors" />
-              </a>
+              </div>
             </div>
           </div>
         </div>
