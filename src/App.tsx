@@ -22,7 +22,8 @@ import {
   events,
   pillars,
   loopSteps,
-  karmaSteps,
+  karmaLedger,
+  karmaChannels,
   communityMoments,
 } from '@/config/content'
 import { Navbar } from '@/components/Navbar'
@@ -869,56 +870,199 @@ const Circles: React.FC = () => {
 
 // ─── Karma / Proof of Work ────────────────────────────────────────────────────
 const Karma: React.FC = () => (
-  <section id="karma" className="bg-[#FAFAF8]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
-      <div className="grid sm:grid-cols-[1fr_1.1fr] gap-16 items-start">
-        {/* Left */}
+  <section id="karma" className="bg-[#FAFAF8] border-b border-black/[0.08] relative overflow-hidden">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
+      {/* Top Grid: Editorial Manifesto + The Physical Karma Passport */}
+      <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-start">
+        {/* Left Column: Manifesto & Value Proposition */}
         <FadeIn>
-          <Label>Proof of Work</Label>
-          <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4rem)] leading-[1.05] text-[#111110] mb-6">
-            No certificates.<br /><span className="italic text-[#111110]/25">Just karma.</span>
+          <Label>03 // Proof of Work · The Karma System</Label>
+          <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4.2rem)] leading-[1.05] text-[#111110] tracking-tight">
+            No certificates.<br />
+            <span className="italic text-[#111110]/35 font-normal">Just verifiable proof.</span>
           </h2>
-          <p className="text-sm text-[#3A3A37]/55 leading-relaxed mb-10 max-w-sm">
-            The µLearn karma system is public, verifiable proof of your contribution. Every task completed, every project shipped — it all goes on a leaderboard anyone can see.
+          <div className="mt-4 flex gap-2">
+            <div className="w-8 h-1 bg-[#BEFF62] rounded-full" />
+            <div className="w-3 h-1 bg-[#BEFF62]/30 rounded-full" />
+          </div>
+
+          <p className="mt-6 text-sm sm:text-base text-[#111110]/75 leading-relaxed max-w-lg">
+            Paper diplomas prove you sat in an auditorium. The µLearn Karma system proves you pushed production code, had your pull requests peer-reviewed, and shipped verifiable software.
           </p>
 
-          {/* Karma badge mockup */}
-          <div className="inline-flex flex-col items-center gap-3 border border-black/[0.08] rounded-2xl px-10 py-7 bg-white shadow-[0_2px_24px_-4px_rgba(0,0,0,0.08)] card-lift">
-            <div className="w-10 h-10 rounded-full bg-[#BEFF62] flex items-center justify-center">
-              <Zap size={18} className="text-[#111110]" />
+          {/* Three High-Agency Guarantees */}
+          <div className="mt-8 space-y-3.5">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-[#BEFF62] flex items-center justify-center shrink-0">
+                <CheckCircle2 size={13} className="text-[#111110]" />
+              </div>
+              <p className="font-sans text-xs sm:text-sm text-[#111110]/80">
+                <strong className="text-[#111110] font-semibold">Public Git Repos over Paper Awards:</strong> Every point is backed by a permanent public link.
+              </p>
             </div>
-            <FlickerNumber value="2.4K" delay={200} className="font-serif text-5xl leading-none" />
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className={`w-2 h-2 rounded-full ${i < 4 ? 'bg-[#BEFF62]' : 'bg-[#E8E8E4]'}`} />
-              ))}
+
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-[#BEFF62] flex items-center justify-center shrink-0">
+                <CheckCircle2 size={13} className="text-[#111110]" />
+              </div>
+              <p className="font-sans text-xs sm:text-sm text-[#111110]/80">
+                <strong className="text-[#111110] font-semibold">Peer-Reviewed Validation:</strong> No self-certification; community leads inspect your output.
+              </p>
             </div>
-            <div className="text-center">
-              <p className="font-mono text-[10px] text-[#9A9A95] uppercase tracking-widest">Karma Score</p>
-              <p className="font-mono text-[9px] text-[#BEFF62] mt-0.5">Top 15% at CEC</p>
+
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 w-5 h-5 rounded-full bg-[#BEFF62] flex items-center justify-center shrink-0">
+                <CheckCircle2 size={13} className="text-[#111110]" />
+              </div>
+              <p className="font-sans text-xs sm:text-sm text-[#111110]/80">
+                <strong className="text-[#111110] font-semibold">Direct Industry Pipeline:</strong> Top Kerala startups filter candidates directly through the public leaderboard.
+              </p>
             </div>
+          </div>
+
+          {/* Leaderboard CTA with shimmer sweep */}
+          <div className="mt-9">
+            <a
+              href="https://app.mulearn.org"
+              target="_blank"
+              rel="noreferrer"
+              className="group/btn relative inline-flex items-center gap-2.5 px-6 sm:px-7 py-3.5 rounded-full bg-[#111110] text-[#FAFAF8] font-sans font-medium text-xs sm:text-sm tracking-wide shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out"
+            >
+              <span className="relative z-10 flex items-center gap-2 font-semibold">
+                Explore Public Leaderboard
+              </span>
+              <ExternalLink className="relative z-10 w-4 h-4 text-[#BEFF62] transition-transform duration-300 ease-out group-hover/btn:translate-x-1" />
+            </a>
           </div>
         </FadeIn>
 
-        {/* Right — 4-step */}
+        {/* Right Column: The Builder Proof Credential & Live Ledger Card */}
         <FadeIn delay={0.15}>
-          <div className="flex flex-col gap-0">
-            {karmaSteps.map((s, i) => (
-              <div key={s.step} className="flex gap-5 pb-8 last:pb-0 relative">
-                {i < karmaSteps.length - 1 && (
-                  <div className="absolute left-[17px] top-10 bottom-0 w-px bg-black/[0.07]" />
-                )}
-                <div className="shrink-0 w-9 h-9 rounded-full border-2 border-[#BEFF62] bg-white flex items-center justify-center">
-                  <span className="font-mono text-[10px] font-medium text-[#111110]">{s.step}</span>
-                </div>
-                <div className="pt-1.5">
-                  <h3 className="text-sm font-semibold text-[#111110] mb-1.5">{s.label}</h3>
-                  <p className="text-sm text-[#3A3A37]/50 leading-relaxed">{s.desc}</p>
+          <div className="relative rounded-2xl sm:rounded-3xl bg-white border border-black/10 p-7 sm:p-9 shadow-[0_12px_36px_-6px_rgba(0,0,0,0.06)] overflow-hidden">
+            {/* Top lime hairline */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-[#BEFF62]" />
+
+            {/* Passport Header */}
+            <div className="flex items-center justify-between pb-5 border-b border-black/[0.06]">
+              <div>
+                <span className="font-mono text-[9px] tracking-[0.22em] text-[#9A9A95] uppercase block font-semibold">
+                  µLearn Credential Protocol
+                </span>
+                <span className="font-mono text-xs text-[#111110] font-bold">
+                  CEC-CAMPUS // BATCH '25
+                </span>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 font-mono text-[10px] text-[#111110] bg-[#BEFF62]/40 border border-[#BEFF62] px-2.5 py-1 rounded-full font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#111110]" />
+                <span>VERIFIED LEDGER</span>
+              </div>
+            </div>
+
+            {/* Middle: Big Karma Score Highlight */}
+            <div className="py-6 border-b border-black/[0.06] flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3">
+              <div>
+                <span className="font-mono text-[10px] text-[#9A9A95] uppercase tracking-wider block">
+                  Total Verifiable Score
+                </span>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <FlickerNumber
+                    value="2,450"
+                    className="font-serif text-5xl sm:text-6xl text-[#111110] font-normal tracking-tight leading-none"
+                  />
+                  <span className="font-mono text-lg font-bold text-[#111110]">KP</span>
                 </div>
               </div>
-            ))}
+
+              <div className="sm:text-right">
+                <span className="inline-block font-mono text-[10px] text-[#111110]/80 bg-[#FAFAF8] border border-black/[0.08] px-2.5 py-1 rounded-md font-medium">
+                  RANK #14 AT CEC · TOP 10% STATEWIDE
+                </span>
+              </div>
+            </div>
+
+            {/* Recent Verified Output Stream */}
+            <div className="py-5 space-y-3">
+              <span className="font-mono text-[10px] text-[#9A9A95] uppercase tracking-wider block font-semibold mb-3">
+                Recent Verified Output Feed
+              </span>
+
+              {karmaLedger.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="group/item flex items-center justify-between p-3 rounded-xl bg-[#FAFAF8] border border-black/[0.05] hover:border-black/15 transition-colors"
+                >
+                  <div className="min-w-0 pr-3">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="font-mono text-[9px] font-bold text-[#111110]/60 uppercase tracking-wider">
+                        {item.type}
+                      </span>
+                      <span className="font-mono text-[9px] text-[#9A9A95]">· {item.time}</span>
+                    </div>
+                    <p className="font-mono text-xs text-[#111110] font-semibold truncate">
+                      {item.title}
+                    </p>
+                    <p className="font-sans text-[11px] text-[#3A3A37]/60 mt-0.5">
+                      {item.reviewer}
+                    </p>
+                  </div>
+
+                  <span className="shrink-0 font-mono text-xs font-bold text-[#111110] bg-[#BEFF62] px-2.5 py-1 rounded-md border border-black/10">
+                    {item.points}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Card Footer: Hash & Verification Link */}
+            <div className="pt-4 border-t border-black/[0.06] flex items-center justify-between text-[10px] font-mono text-[#9A9A95]">
+              <span>HASH // 9f8a..2025 · IMMUTABLE</span>
+              <span className="text-[#111110]/70 font-semibold">app.mulearn.org/ledger</span>
+            </div>
           </div>
         </FadeIn>
+      </div>
+
+      {/* Bottom 3 Karma Proof Channels (Bento Grid) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 mt-16 sm:mt-20">
+        {karmaChannels.map((channel, idx) => (
+          <FadeIn key={channel.id} delay={0.1 + idx * 0.08}>
+            <div className="group relative bg-white rounded-2xl border border-black/[0.08] p-7 sm:p-8 flex flex-col justify-between h-full transition-all duration-300 hover:shadow-[0_12px_32px_-6px_rgba(0,0,0,0.06)] hover:-translate-y-1 overflow-hidden">
+              {/* Top hairline indicator */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              <div>
+                <div className="flex items-center justify-between pb-4 border-b border-black/[0.06]">
+                  <span className="font-mono text-xs font-bold text-[#111110]/40">
+                    {channel.id} //
+                  </span>
+                  <span className="font-mono text-[10px] font-bold text-[#111110] bg-[#BEFF62] px-2 py-0.5 rounded">
+                    {channel.yield}
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl text-[#111110] font-normal leading-snug tracking-tight mt-5">
+                  {channel.title}
+                </h3>
+
+                <p className="font-sans text-xs sm:text-sm text-[#3A3A37]/70 leading-relaxed mt-2.5">
+                  {channel.desc}
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-black/[0.06] flex flex-wrap gap-1.5">
+                {channel.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono text-[9px] tracking-wider text-[#111110]/60 bg-[#FAFAF8] border border-black/[0.06] rounded px-2 py-0.5 uppercase"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        ))}
       </div>
     </div>
   </section>

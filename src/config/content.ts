@@ -125,6 +125,57 @@ export const loopSteps = [
   },
 ]
 
+export const karmaLedger = [
+  {
+    type:     'PR MERGED',
+    title:    'cec-makers/attendance-portal',
+    points:   '+200 KP',
+    reviewer: 'Peer-reviewed by @arjun-s',
+    domain:   'Web & Apps',
+    time:     '2h ago',
+  },
+  {
+    type:     'LIVE DEPLOY',
+    title:    'cec-bot.vercel.app',
+    points:   '+400 KP',
+    reviewer: 'Validated by µLearn Core',
+    domain:   'AI & Data',
+    time:     'Yesterday',
+  },
+  {
+    type:     'CIRCLE SPRINT',
+    title:    'Cloud Security CTF Milestone 02',
+    points:   '+300 KP',
+    reviewer: 'Lab verified · 4 flags solved',
+    domain:   'Cloud & Sec',
+    time:     '2d ago',
+  },
+]
+
+export const karmaChannels = [
+  {
+    id:    '01',
+    title: 'Open Source & PRs',
+    yield: '+100 to +400 KP',
+    desc:  'Push production bugfixes to public repositories, author community documentation, or deploy campus software.',
+    tags:  ['GitHub PRs', 'Live Deployments'],
+  },
+  {
+    id:    '02',
+    title: 'Circle Milestones',
+    yield: '+200 to +500 KP',
+    desc:  'Complete structured roadmap modules with your learning circle squad and showcase projects at public Demo Days.',
+    tags:  ['Weekly Standups', 'Demo Days'],
+  },
+  {
+    id:    '03',
+    title: 'Hackathons & Bounties',
+    yield: '+400 to +1,000 KP',
+    desc:  'Build functional end-to-end prototypes during 24-hour sprints or complete high-priority platform challenges.',
+    tags:  ['24-Hour Sprints', 'Statewide Bounties'],
+  },
+]
+
 export const karmaSteps = [
   { step: '01', label: 'Pick a task',      desc: 'Browse open tasks and challenges on the µLearn platform. Pick what interests you.'   },
   { step: '02', label: 'Build & submit',   desc: 'Work on it. Ship it publicly — a repo, a post, a Figma link. Proof must be verifiable.' },
