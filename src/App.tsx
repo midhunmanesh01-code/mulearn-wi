@@ -1,134 +1,559 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
-import { Preloader } from '@/components/Preloader'
-import { Glass } from '@/components/Glass'
-import { MagicRings } from '@/components/MagicRings'
-import { SplitText } from '@/components/SplitText'
-import { chapter, circles, events, stats } from '@/config/content'
+import { motion, useInView } from 'motion/react'
+import { ArrowUpRight, ExternalLink, ArrowRight, Zap, Users, Calendar, Star } from 'lucide-react'
+import { chapter, stats, circles, events, pillars, karmaSteps, communityMoments } from '@/config/content'
+import { Navbar } from '@/components/Navbar'
 
-const links = [
-  { href: '#circles', label: 'Circles' },
-  { href: '#events', label: 'Events' },
-  { href: '#join', label: 'Join' },
-]
+// ─── Scroll-reveal wrapper ─────────────────────────────────────────────────────
+const FadeIn: React.FC<{
+  children: React.ReactNode
+  delay?: number
+  className?: string
+  y?: number
+}> = ({ children, delay = 0, className = '', y = 20 }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
-const Navbar: React.FC = () => (
-  <Glass className="fixed left-1/2 top-4 z-50 flex w-[min(92%,900px)] -translate-x-1/2 items-center justify-between rounded-full py-2.5 pl-6 pr-2.5">
-    <a href="#top" className="font-display text-lg font-bold tracking-tight">
-      µLearn <span className="text-cyan">CEC</span>
-    </a>
-    <nav className="flex items-center gap-1 text-sm">
-      {links.slice(0, 2).map((l) => (
-        <a key={l.href} href={l.href} className="hidden rounded-full px-4 py-2 text-white/70 transition hover:bg-white/10 hover:text-white sm:block">{l.label}</a>
-      ))}
-      <a href="#join" className="rounded-full bg-violet px-5 py-2 font-semibold text-white shadow-[0_8px_24px_-8px_#8b5cf6] transition hover:-translate-y-0.5">Join</a>
-    </nav>
-  </Glass>
+// ─── Section eyebrow label ────────────────────────────────────────────────────
+const Label: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="inline-flex items-center gap-2 mb-5">
+    <span className="w-4 h-px bg-[#BEFF62]" />
+    <span className="font-mono text-[10px] tracking-[0.2em] text-[#9A9A95] uppercase">{children}</span>
+  </div>
 )
 
-const Hero: React.FC<{ readonly isReady: boolean }> = ({ isReady }) => (
-  <section id="top" className="relative grid min-h-[100dvh] items-center overflow-hidden px-6 pb-20 pt-32 sm:px-10">
-    <div className="absolute inset-0" aria-hidden="true">
-      <MagicRings color="#8b5cf6" colorTwo="#59d6e8" ringCount={6} motion="breathe" speed={0.8}
-        lineThickness={1.6} glow={1.2} baseRadius={0.42} radiusStep={0.08} opacity={0.75}
-        interactive followMouse mouseInfluence={0.25} clickBurst intro={false} theme="dark" maxDevicePixelRatio={1.5} />
-    </div>
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,transparent_30%,#0b1f3f_100%)]" aria-hidden="true" />
-    <div className="relative mx-auto w-full max-w-6xl">
-      <h1 className="font-heading text-[clamp(3rem,10vw,8rem)] font-bold uppercase leading-[0.92] tracking-tight">
-        {isReady ? (
-          <>
-            <SplitText tag="span" text="Learn" className="text-white" effect="rise" splitType="chars" delay={45} duration={1} trigger="load" hoverEffect="lift" />{' '}
-            <SplitText tag="span" text="together" className="text-violet" effect="rise" splitType="chars" delay={45} duration={1} trigger="load" startDelay={250} hoverEffect="lift" />
-          </>
-        ) : (
-          <span className="invisible">Learn together</span>
-        )}
-      </h1>
-      <p className="mt-6 max-w-xl text-lg text-white/70">{chapter.tagline}</p>
-      <div className="mt-9 flex flex-wrap gap-3">
-        <a href="#join" className="rounded-full bg-violet px-7 py-3.5 font-semibold shadow-[0_12px_32px_-10px_#8b5cf6] transition hover:-translate-y-0.5">Join the chapter</a>
-        <a href="#circles" className="glass rounded-full px-7 py-3.5 font-semibold transition hover:-translate-y-0.5">Browse circles</a>
+// ─── Hero ──────────────────────────────────────────────────────────────────────
+const Hero: React.FC = () => (
+  <section id="top" className="relative overflow-hidden bg-[#FAFAF8]">
+    {/* Fine grid */}
+    <div className="grid-bg absolute inset-0 pointer-events-none opacity-100" aria-hidden="true" />
+
+    {/* Very subtle lime glow top-center */}
+    <div
+      className="absolute left-1/2 -top-20 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
+      style={{ background: 'radial-gradient(ellipse at top, rgba(190,255,98,0.18) 0%, transparent 65%)' }}
+      aria-hidden="true"
+    />
+
+    <div className="relative mx-auto max-w-6xl px-6 sm:px-10 pt-36 pb-20 min-h-[100dvh] flex flex-col justify-between">
+      <div>
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="inline-flex items-center gap-2.5 border border-black/[0.08] rounded-full px-4 py-2 mb-12 bg-white/70 backdrop-blur-sm"
+        >
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="ping-slow absolute inline-flex h-full w-full rounded-full bg-[#9AE637]" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#9AE637]" />
+          </span>
+          <span className="font-mono text-[10px] tracking-widest text-[#9A9A95] uppercase">
+            GTech µLearn · College of Engineering, Chengannur
+          </span>
+        </motion.div>
+
+        {/* Headline — massive serif */}
+        <div className="overflow-hidden mb-1">
+          <motion.h1
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.95, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            className="font-serif text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight text-[#111110]"
+          >
+            Learn out loud.
+          </motion.h1>
+        </div>
+        <div className="overflow-hidden">
+          <motion.h1
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.95, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="font-serif italic text-[clamp(4rem,11vw,10rem)] leading-[0.88] tracking-tight text-[#111110]/25"
+          >
+            Build real things.
+          </motion.h1>
+        </div>
+
+        {/* Lime highlight bar under first line */}
+        <motion.div
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          style={{ transformOrigin: 'left' }}
+          className="mt-3 h-1.5 w-32 bg-[#BEFF62] rounded-full"
+        />
+
+        {/* Sub + CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-10 flex flex-col sm:flex-row sm:items-end gap-8 sm:gap-16"
+        >
+          <p className="max-w-xs text-sm text-[#3A3A37]/60 leading-relaxed">
+            {chapter.tagline}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={chapter.joinUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex items-center gap-2 rounded-full bg-[#111110] text-white px-7 py-3.5 text-sm font-semibold transition-all duration-200 hover:bg-[#2a2a28] hover:shadow-[0_8px_32px_-6px_rgba(0,0,0,0.3)] font-mono uppercase tracking-wider"
+            >
+              Join the chapter
+              <ArrowUpRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+            <a
+              href="#circles"
+              className="flex items-center gap-2 rounded-full border border-black/[0.1] bg-white px-7 py-3.5 text-sm font-mono uppercase tracking-wider text-[#3A3A37]/60 transition-all duration-200 hover:border-black/20 hover:text-[#111110]"
+            >
+              Explore circles
+            </a>
+          </div>
+        </motion.div>
       </div>
-      <dl className="mt-16 grid max-w-2xl grid-cols-3 gap-3">
-        {stats.map((s) => (
-          <Glass key={s.label} className="rounded-2xl p-4 sm:p-5">
-            <dt className="font-display text-3xl font-bold sm:text-4xl">{s.value}</dt>
-            <dd className="mt-1 text-xs text-white/60 sm:text-sm">{s.label}</dd>
-          </Glass>
+
+      {/* Stats — anchored to bottom */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+        className="mt-24"
+      >
+        <div className="border-t border-black/[0.07] mb-7" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-6">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <p className="font-mono text-[2.5rem] font-medium text-[#111110] tabular-nums leading-none">{s.value}</p>
+              <p className="font-mono text-[9px] tracking-widest text-[#9AE637] uppercase mt-2.5">{s.label}</p>
+              <p className="text-xs text-[#9A9A95] mt-0.5">{s.sub}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  </section>
+)
+
+// ─── Marquee ticker ────────────────────────────────────────────────────────────
+const TICKER = [
+  'PEER LEARNING', 'BUILD IN PUBLIC', 'OPEN SOURCE', 'KARMA SYSTEM',
+  'NO HIERARCHY', 'REAL PROJECTS', 'EARN BY DOING', 'CEC CAMPUS',
+  'LEARNING CIRCLES', 'PROOF OF WORK', 'FOCES CEC', 'IEDC BOOTCAMP',
+]
+const Marquee: React.FC = () => {
+  const doubled = [...TICKER, ...TICKER]
+  return (
+    <div className="border-y border-black/[0.07] overflow-hidden py-3.5 select-none bg-white">
+      <div className="marquee-track">
+        {doubled.map((item, i) => (
+          <span key={i} className="font-mono text-[10px] tracking-[0.18em] text-[#111110]/20 uppercase px-5 whitespace-nowrap">
+            {item}<span className="ml-5 text-[#BEFF62]">·</span>
+          </span>
         ))}
-      </dl>
+      </div>
+    </div>
+  )
+}
+
+// ─── Community / About ────────────────────────────────────────────────────────
+const Community: React.FC = () => (
+  <section className="bg-[#FAFAF8]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
+      <div className="grid sm:grid-cols-[1fr_1fr] gap-16 sm:gap-24 items-start">
+        {/* Left */}
+        <FadeIn>
+          <Label>About µLearn CEC</Label>
+          <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4rem)] leading-[1.05] text-[#111110]">
+            A community<br />that compounds.
+          </h2>
+          <div className="mt-5 flex gap-2">
+            <div className="w-8 h-1 bg-[#BEFF62] rounded-full" />
+            <div className="w-3 h-1 bg-[#BEFF62]/30 rounded-full" />
+          </div>
+          <p className="mt-7 text-sm text-[#3A3A37]/55 leading-[1.9] max-w-sm">
+            GTech µLearn is Kerala's largest peer-learning movement — built on the idea that the best education happens when curious people get out of classrooms and build real things together.
+          </p>
+          <p className="mt-4 text-sm text-[#3A3A37]/55 leading-[1.9] max-w-sm">
+            The CEC chapter connects students across all years and domains through learning circles, open-source sprints, hackathons, and a karma system that rewards real, verifiable work.
+          </p>
+          <a
+            href={chapter.linktree}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 mt-8 font-mono text-xs text-[#111110] uppercase tracking-wider border-b border-[#BEFF62] pb-0.5 hover:gap-3 transition-all duration-200"
+          >
+            All our links <ArrowRight size={12} />
+          </a>
+        </FadeIn>
+
+        {/* Right — pillars */}
+        <FadeIn delay={0.15}>
+          <div className="flex flex-col divide-y divide-black/[0.06]">
+            {pillars.map((p) => (
+              <div key={p.id} className="py-7 first:pt-0 last:pb-0 group cursor-default">
+                <div className="flex items-start gap-5">
+                  <div className="mt-0.5 w-7 h-7 rounded-sm bg-[#BEFF62] flex items-center justify-center shrink-0">
+                    <span className="font-mono text-[9px] font-medium text-[#111110]">{p.id}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-[#111110] mb-2">{p.title}</h3>
+                    <p className="text-sm text-[#3A3A37]/50 leading-relaxed">{p.body}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+      </div>
     </div>
   </section>
 )
 
+// ─── Learning Circles ─────────────────────────────────────────────────────────
 const Circles: React.FC = () => (
-  <section id="circles" className="mx-auto max-w-6xl px-6 py-24 sm:px-10">
-    <h2 className="mb-12 max-w-2xl font-display text-4xl font-bold tracking-tight sm:text-5xl">Pick a circle and start building</h2>
-    <div className="grid gap-4 sm:grid-cols-2">
-      {circles.map((c) => (
-        <Glass key={c.name} tabIndex={0} className="rounded-3xl p-7 transition duration-300 hover:-translate-y-1.5">
-          <h3 className="font-display text-2xl font-bold">{c.name}</h3>
-          <p className="mt-3 text-white/65">{c.blurb}</p>
-          <p className="mt-6 text-sm font-semibold text-cyan">{c.members} members</p>
-        </Glass>
-      ))}
+  <section id="circles" className="bg-[#111110]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24">
+      <FadeIn className="mb-14">
+        {/* Dark-mode label variant */}
+        <div className="inline-flex items-center gap-2 mb-5">
+          <span className="w-4 h-px bg-[#BEFF62]" />
+          <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase">Learning Circles</span>
+        </div>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <h2 className="font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-white">
+            Pick a circle.<br /><span className="italic text-white/25">Start building.</span>
+          </h2>
+          <p className="text-sm text-white/30 max-w-xs leading-relaxed">
+            Small groups, big output. Weekly standups, real codebases, shared projects.
+          </p>
+        </div>
+      </FadeIn>
+
+      <div className="grid sm:grid-cols-2 gap-px bg-white/[0.05] rounded-2xl overflow-hidden border border-white/[0.05]">
+        {circles.map((c, i) => (
+          <FadeIn key={c.id} delay={i * 0.06}>
+            <div className="group relative bg-[#111110] p-8 sm:p-9 transition-colors duration-300 hover:bg-[#161614] h-full flex flex-col cursor-default">
+              {/* Lime top bar */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl leading-none select-none" role="img" aria-label={c.name}>{c.emoji}</span>
+                  <span className="font-mono text-[9px] text-[#BEFF62]/50 tracking-widest">{c.id}</span>
+                </div>
+                <span className="font-mono text-[9px] text-white/20 tracking-wider">{c.members} members</span>
+              </div>
+
+              <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-[#BEFF62] transition-colors duration-300">{c.name}</h3>
+              <p className="text-sm text-white/35 leading-relaxed mb-7 flex-1">{c.blurb}</p>
+
+              <div className="flex flex-wrap gap-1.5 mt-auto">
+                {c.tags.map((t) => (
+                  <span key={t} className="font-mono text-[9px] tracking-wider text-white/20 border border-white/[0.07] rounded-sm px-2 py-1 uppercase group-hover:border-[#BEFF62]/20 group-hover:text-white/35 transition-colors duration-200">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
     </div>
   </section>
 )
 
+// ─── Karma / Proof of Work ────────────────────────────────────────────────────
+const Karma: React.FC = () => (
+  <section id="karma" className="bg-[#FAFAF8]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
+      <div className="grid sm:grid-cols-[1fr_1.1fr] gap-16 items-start">
+        {/* Left */}
+        <FadeIn>
+          <Label>Proof of Work</Label>
+          <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4rem)] leading-[1.05] text-[#111110] mb-6">
+            No certificates.<br /><span className="italic text-[#111110]/25">Just karma.</span>
+          </h2>
+          <p className="text-sm text-[#3A3A37]/55 leading-relaxed mb-10 max-w-sm">
+            The µLearn karma system is public, verifiable proof of your contribution. Every task completed, every project shipped — it all goes on a leaderboard anyone can see.
+          </p>
+
+          {/* Karma badge mockup */}
+          <div className="inline-flex flex-col items-center gap-3 border border-black/[0.08] rounded-2xl px-10 py-7 bg-white shadow-[0_2px_24px_-4px_rgba(0,0,0,0.08)] card-lift">
+            <div className="w-10 h-10 rounded-full bg-[#BEFF62] flex items-center justify-center">
+              <Zap size={18} className="text-[#111110]" />
+            </div>
+            <span className="font-mono text-5xl font-medium text-[#111110] tabular-nums">2.4K</span>
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className={`w-2 h-2 rounded-full ${i < 4 ? 'bg-[#BEFF62]' : 'bg-[#E8E8E4]'}`} />
+              ))}
+            </div>
+            <div className="text-center">
+              <p className="font-mono text-[10px] text-[#9A9A95] uppercase tracking-widest">Karma Score</p>
+              <p className="font-mono text-[9px] text-[#BEFF62] mt-0.5">Top 15% at CEC</p>
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* Right — 4-step */}
+        <FadeIn delay={0.15}>
+          <div className="flex flex-col gap-0">
+            {karmaSteps.map((s, i) => (
+              <div key={s.step} className="flex gap-5 pb-8 last:pb-0 relative">
+                {i < karmaSteps.length - 1 && (
+                  <div className="absolute left-[17px] top-10 bottom-0 w-px bg-black/[0.07]" />
+                )}
+                <div className="shrink-0 w-9 h-9 rounded-full border-2 border-[#BEFF62] bg-white flex items-center justify-center">
+                  <span className="font-mono text-[10px] font-medium text-[#111110]">{s.step}</span>
+                </div>
+                <div className="pt-1.5">
+                  <h3 className="text-sm font-semibold text-[#111110] mb-1.5">{s.label}</h3>
+                  <p className="text-sm text-[#3A3A37]/50 leading-relaxed">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+      </div>
+    </div>
+  </section>
+)
+
+// ─── Community Moments ────────────────────────────────────────────────────────
+const Moments: React.FC = () => {
+  const icons = [Calendar, Users, Zap, Star]
+
+  return (
+    <section className="bg-white border-y border-black/[0.06]">
+      <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24">
+        <FadeIn className="mb-14">
+          <Label>Community Moments</Label>
+          <h2 className="font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-[#111110]">
+            We show up,<br /><span className="italic text-[#111110]/25">every time.</span>
+          </h2>
+        </FadeIn>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" style={{ gridAutoRows: '180px' }}>
+          {communityMoments.map((m, idx) => {
+            const Icon = icons[idx]
+            const isWide = m.aspect === 'wide'
+            return (
+              <FadeIn
+                key={idx}
+                delay={idx * 0.07}
+                className={`${isWide ? 'col-span-2' : 'col-span-1'} row-span-1 h-[180px]`}
+              >
+                <div
+                  className="group relative h-full rounded-xl border border-black/[0.07] overflow-hidden flex flex-col justify-end p-5 cursor-default card-lift"
+                  style={{ background: '#F4F4F1' }}
+                >
+                  {/* Lime top accent on hover */}
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  {/* Large icon texture */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity duration-300">
+                    <Icon size={72} className="text-[#111110]" />
+                  </div>
+
+                  <div className="relative">
+                    <p className="text-sm font-semibold text-[#111110]/80">{m.label}</p>
+                    <p className="font-mono text-[9px] text-[#9A9A95] mt-1 uppercase tracking-wider">{m.desc}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Events ───────────────────────────────────────────────────────────────────
 const Events: React.FC = () => (
-  <section id="events" className="mx-auto max-w-4xl px-6 py-24 sm:px-10">
-    <h2 className="mb-12 font-display text-4xl font-bold tracking-tight sm:text-5xl">Our year</h2>
-    <ol className="relative space-y-5 border-l border-white/15 pl-8">
-      {events.map((e) => (
-        <li key={e.title} className="relative">
-          <span className="absolute -left-[39px] top-7 h-3 w-3 rounded-full bg-cyan shadow-[0_0_18px_#59d6e8]" aria-hidden="true" />
-          <Glass className="rounded-3xl p-6 sm:flex sm:items-center sm:gap-8">
-            <time className="font-heading text-3xl font-bold uppercase text-violet sm:w-20">{e.when}</time>
-            <div><h3 className="font-display text-xl font-bold">{e.title}</h3><p className="mt-1 text-white/65">{e.note}</p></div>
-          </Glass>
-        </li>
-      ))}
-    </ol>
+  <section id="events" className="bg-[#FAFAF8]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
+      <FadeIn className="mb-14">
+        <Label>Events · 2025</Label>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <h2 className="font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-[#111110]">
+            Our year, in full.
+          </h2>
+          <span className="font-mono text-xs text-[#9A9A95] uppercase tracking-wider">{events.length} events this year</span>
+        </div>
+      </FadeIn>
+
+      <div>
+        {events.map((e, i) => (
+          <FadeIn key={e.title} delay={i * 0.07}>
+            <div className="group grid grid-cols-[72px_1fr_auto] sm:grid-cols-[100px_1fr_auto] items-start gap-5 sm:gap-8 border-b border-black/[0.06] py-7 first:border-t transition-all duration-200 hover:bg-white hover:shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)] px-4 -mx-4 rounded-xl">
+              <div>
+                <span className="font-mono text-lg font-medium text-[#9AE637]">{e.when}</span>
+                <p className="font-mono text-[9px] text-[#C4C4BE] mt-0.5 uppercase tracking-wider">{e.year}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#111110] text-base mb-1.5 group-hover:text-[#111110] transition-colors">{e.title}</h3>
+                <p className="text-sm text-[#3A3A37]/50 leading-relaxed">{e.note}</p>
+              </div>
+              <div className="pt-0.5">
+                <span className="font-mono text-[9px] border border-black/[0.07] rounded-full px-3 py-1 text-[#9A9A95] uppercase tracking-wider whitespace-nowrap bg-white">
+                  {e.type}
+                </span>
+              </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </div>
   </section>
 )
 
+// ─── Join CTA ──────────────────────────────────────────────────────────────────
 const Join: React.FC = () => (
-  <section id="join" className="mx-auto max-w-5xl px-6 pb-28 pt-12 sm:px-10">
-    <Glass className="rounded-[2rem] px-6 py-16 text-center sm:py-20">
-      <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Ready to learn out loud?</h2>
-      <p className="mx-auto mt-4 max-w-md text-white/65">Create your µLearn account, then tell us which circle you want.</p>
-      <a href={chapter.joinUrl} target="_blank" rel="noreferrer" className="mt-8 inline-block rounded-full bg-violet px-8 py-4 font-semibold shadow-[0_12px_32px_-10px_#8b5cf6] transition hover:-translate-y-0.5">Create your account</a>
-    </Glass>
+  <section id="join" className="bg-[#111110]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
+      <FadeIn>
+        <div className="relative overflow-hidden rounded-2xl bg-[#BEFF62] px-8 py-20 sm:px-20 text-center">
+          {/* Fine grid on lime */}
+          <div
+            className="absolute inset-0 opacity-20 pointer-events-none"
+            style={{
+              backgroundImage: 'linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)',
+              backgroundSize: '32px 32px',
+            }}
+          />
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 mb-6">
+              <span className="w-4 h-px bg-[#111110]/30" />
+              <span className="font-mono text-[10px] tracking-[0.2em] text-[#111110]/50 uppercase">Get started</span>
+            </div>
+            <h2 className="font-serif text-[clamp(3rem,8vw,6rem)] leading-[0.92] text-[#111110] mb-6">
+              Start building.
+              <br />
+              <span className="italic opacity-40">Earn karma.</span>
+            </h2>
+            <p className="text-[#111110]/55 text-sm max-w-sm mx-auto mb-10 leading-relaxed">
+              Create your µLearn account, join the CEC chapter, pick your circle. Karma starts the moment you show up.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href={chapter.joinUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#111110] text-white px-8 py-4 text-sm font-semibold transition-all duration-200 hover:bg-[#2a2a28] hover:shadow-[0_8px_32px_-6px_rgba(0,0,0,0.5)] font-mono uppercase tracking-wider"
+              >
+                Create your account
+                <ExternalLink size={13} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={chapter.discord}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#111110]/20 px-8 py-4 text-sm font-mono uppercase tracking-wider text-[#111110]/60 transition-all duration-200 hover:border-[#111110]/40 hover:text-[#111110]"
+              >
+                Join Discord
+              </a>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+    </div>
   </section>
 )
 
-export const App: React.FC = () => {
-  const [isReady, setIsReady] = useState(false)
+// ─── Footer ────────────────────────────────────────────────────────────────────
+const Footer: React.FC = () => (
+  <footer className="bg-[#111110] border-t border-white/[0.05]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-14">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-12">
+        {/* Brand */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-sm bg-[#BEFF62] flex items-center justify-center font-serif italic text-[#111110] text-lg">µ</div>
+            <span className="font-mono text-sm text-white/50">Learn <span className="text-[#BEFF62]">CEC</span></span>
+          </div>
+          <p className="text-xs text-white/25 max-w-[200px] leading-relaxed">Campus chapter of GTech µLearn at College of Engineering, Chengannur.</p>
+        </div>
 
+        {/* Links */}
+        <div className="grid grid-cols-3 gap-x-12 gap-y-8">
+          <div>
+            <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Community</p>
+            <div className="flex flex-col gap-2.5">
+              {[['Discord', chapter.discord], ['Instagram', chapter.instagram], ['LinkedIn', chapter.linkedin]].map(([label, href]) => (
+                <a key={label} href={href} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">{label}</a>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Platform</p>
+            <div className="flex flex-col gap-2.5">
+              <a href={chapter.joinUrl} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">µLearn App</a>
+              <a href="#circles" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Circles</a>
+              <a href="#karma"   className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Karma</a>
+            </div>
+          </div>
+          <div>
+            <p className="font-mono text-[9px] tracking-widest text-white/20 uppercase mb-4">Chapter</p>
+            <div className="flex flex-col gap-2.5">
+              <a href="#events"           className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Events</a>
+              <a href="#join"             className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">Join</a>
+              <a href={chapter.linktree} target="_blank" rel="noreferrer" className="text-xs text-white/30 hover:text-[#BEFF62] transition-colors">All links</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-12 pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p className="font-mono text-[10px] text-white/15 uppercase tracking-widest">© {new Date().getFullYear()} µLearn CEC</p>
+        <p className="font-mono text-[10px] text-white/10">College of Engineering, Chengannur · Kerala, India</p>
+      </div>
+    </div>
+  </footer>
+)
+
+// ─── App root ──────────────────────────────────────────────────────────────────
+export const App: React.FC = () => {
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const lenis = new Lenis()
-    let id = requestAnimationFrame(function raf(t: number) { lenis.raf(t); id = requestAnimationFrame(raf) })
+    let id = requestAnimationFrame(function raf(t: number) {
+      lenis.raf(t)
+      id = requestAnimationFrame(raf)
+    })
     return () => { cancelAnimationFrame(id); lenis.destroy() }
   }, [])
 
   return (
-    <>
-      <Preloader onComplete={() => setIsReady(true)} />
-      <div className="relative min-h-[100dvh] overflow-x-clip bg-night font-sans selection:bg-violet selection:text-white">
-        <div className="pointer-events-none fixed -top-40 left-1/2 h-[450px] w-[800px] -translate-x-1/2 rounded-full bg-violet/15 blur-[130px]" aria-hidden="true" />
-        <Navbar />
-        <main>
-          <Hero isReady={isReady} />
-          <Circles />
-          <Events />
-          <Join />
-        </main>
-        <footer className="border-t border-white/10 py-8 text-center text-sm text-white/50">© {new Date().getFullYear()} {chapter.name}</footer>
-      </div>
-    </>
+    <div className="paper-texture relative min-h-[100dvh] overflow-x-clip bg-[#FAFAF8] font-sans selection:bg-[#BEFF62] selection:text-[#111110]">
+      <Navbar />
+      <main>
+        <Hero />
+        <Marquee />
+        <Community />
+        <Circles />
+        <Karma />
+        <Moments />
+        <Events />
+        <Join />
+      </main>
+      <Footer />
+    </div>
   )
 }
 
