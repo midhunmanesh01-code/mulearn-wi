@@ -29,6 +29,7 @@ import {
   communityMoments,
 } from '@/config/content'
 import { Navbar } from '@/components/Navbar'
+import { Preloader } from '@/components/Preloader'
 import { FlickerNumber } from '@/components/FlickerNumber'
 import { SplitText } from '@/components/SplitText'
 
@@ -1666,6 +1667,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="paper-texture relative min-h-[100dvh] overflow-x-clip bg-[#FAFAF8] font-sans selection:bg-[#BEFF62] selection:text-[#111110]">
+      <Preloader />
       <Navbar />
       <main>
         <Hero />
