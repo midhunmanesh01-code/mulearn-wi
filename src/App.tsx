@@ -1,8 +1,30 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
 import { motion, useInView } from 'motion/react'
-import { ExternalLink, ArrowRight, Zap, Users, Calendar, Star } from 'lucide-react'
-import { chapter, stats, circles, events, pillars, karmaSteps, communityMoments } from '@/config/content'
+import {
+  ExternalLink,
+  ArrowRight,
+  Zap,
+  Users,
+  Calendar,
+  Star,
+  Layers,
+  Terminal,
+  Globe,
+  Code2,
+  Rocket,
+  CheckCircle2,
+} from 'lucide-react'
+import {
+  chapter,
+  stats,
+  circles,
+  events,
+  pillars,
+  loopSteps,
+  karmaSteps,
+  communityMoments,
+} from '@/config/content'
 import { Navbar } from '@/components/Navbar'
 import { FlickerNumber } from '@/components/FlickerNumber'
 import { SplitText } from '@/components/SplitText'
@@ -267,55 +289,291 @@ const Marquee: React.FC = () => {
 }
 
 // ─── Community / About ────────────────────────────────────────────────────────
+const LOOP_ICONS = [Users, Code2, Rocket, Zap]
+const PILLAR_ICONS = [Layers, Terminal, Globe]
+
+const PeerLearningLoop: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { margin: '-60px 0px -60px 0px', amount: 0.2 })
+  const [activeStep, setActiveStep] = useState(0)
+
+  useEffect(() => {
+    if (!isInView) {
+      setActiveStep(0)
+      return
+    }
+
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % loopSteps.length)
+    }, 2800)
+
+    return () => clearInterval(interval)
+  }, [isInView])
+
+  const active = loopSteps[activeStep]
+
+  return (
+    <div
+      ref={containerRef}
+      className="rounded-2xl border border-black/[0.08] bg-white p-5 sm:p-7 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.05)] transition-all duration-300"
+    >
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-black/[0.06]">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#BEFF62] border border-black/15 animate-pulse" />
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#111110]/70 font-semibold">
+            Continuous Peer Loop
+          </span>
+        </div>
+        <span className="font-mono text-[10px] text-[#9A9A95] tracking-widest">
+          PHASE 0{activeStep + 1} / 0{loopSteps.length}
+        </span>
+      </div>
+
+      {/* 4 Steps Row */}
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 items-center">
+        {loopSteps.map((s, i) => {
+          const Icon = LOOP_ICONS[i] || Users
+          const isActive = activeStep === i
+          const isPassed = activeStep > i
+
+          return (
+            <button
+              key={s.step}
+              type="button"
+              onClick={() => setActiveStep(i)}
+              className={`group flex flex-col items-center text-center p-2.5 sm:p-3 rounded-xl transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? 'bg-[#111110] text-white shadow-md scale-[1.02]'
+                  : 'bg-[#FAFAF8] hover:bg-black/[0.04] text-[#111110]'
+              }`}
+            >
+              <div
+                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-all duration-300 mb-2 ${
+                  isActive
+                    ? 'bg-[#BEFF62] text-[#111110]'
+                    : isPassed
+                    ? 'bg-black/[0.06] text-[#111110]'
+                    : 'bg-white border border-black/[0.07] text-[#9A9A95]'
+                }`}
+              >
+                <Icon size={16} />
+              </div>
+              <span
+                className={`font-mono text-[10px] sm:text-xs tracking-wider uppercase font-medium ${
+                  isActive ? 'text-white' : 'text-[#111110]/70'
+                }`}
+              >
+                {s.label}
+              </span>
+              <span
+                className={`font-mono text-[8px] sm:text-[9px] mt-0.5 tracking-tight ${
+                  isActive ? 'text-[#BEFF62]' : 'text-[#9A9A95]'
+                }`}
+              >
+                0{i + 1}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Dynamic Active Step Detail Card */}
+      <div className="mt-4 pt-4 border-t border-black/[0.06] flex items-center justify-between gap-4">
+        <div>
+          <span className="font-mono text-[10px] text-[#9A9A95] tracking-wider uppercase">
+            Stage · {active.tagline}
+          </span>
+          <p className="font-sans text-xs sm:text-sm text-[#111110]/80 mt-0.5 leading-relaxed">
+            {active.desc}
+          </p>
+        </div>
+        <div className="shrink-0 hidden sm:block">
+          <span className="font-mono text-[9px] text-[#111110] font-medium px-2 py-1 rounded bg-[#BEFF62]/35 border border-[#BEFF62]/60 uppercase">
+            Peer Engine
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const Community: React.FC = () => (
-  <section id="about" className="bg-[#FAFAF8]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-32">
-      <div className="grid sm:grid-cols-[1fr_1fr] gap-16 sm:gap-24 items-start">
-        {/* Left */}
+  <section id="about" className="bg-[#FAFAF8] border-b border-black/[0.06]">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
+      {/* Top Header Grid */}
+      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-start">
         <FadeIn>
-          <Label>About µLearn CEC</Label>
-          <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4rem)] leading-[1.05] text-[#111110]">
-            A community<br />that compounds.
+          <Label>Manifesto · Why µLearn CEC</Label>
+          <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4.2rem)] leading-[1.05] text-[#111110] tracking-tight">
+            A community<br />
+            <span className="italic text-[#111110]/35 font-normal">that compounds.</span>
           </h2>
           <div className="mt-5 flex gap-2">
             <div className="w-8 h-1 bg-[#BEFF62] rounded-full" />
             <div className="w-3 h-1 bg-[#BEFF62]/30 rounded-full" />
           </div>
-          <p className="mt-7 text-sm text-[#3A3A37]/55 leading-[1.9] max-w-sm">
-            GTech µLearn is Kerala's largest peer-learning movement — built on the idea that the best education happens when curious people get out of classrooms and build real things together.
+          <p className="mt-7 text-sm sm:text-[15px] text-[#3A3A37]/75 leading-[1.8] max-w-xl">
+            GTech µLearn is Kerala's largest peer-learning movement — built on the premise that genuine engineering competence isn’t created by sitting through slides, but by building real things with peers who care.
           </p>
-          <p className="mt-4 text-sm text-[#3A3A37]/55 leading-[1.9] max-w-sm">
-            The CEC chapter connects students across all years and domains through learning circles, open-source sprints, hackathons, and a karma system that rewards real, verifiable work.
+          <p className="mt-3.5 text-sm sm:text-[15px] text-[#3A3A37]/75 leading-[1.8] max-w-xl">
+            The CEC chapter connects makers across all years and domains through learning circles, open-source sprints, and a statewide karma system that rewards verifiable proof of work.
           </p>
-          <a
-            href={chapter.linktree}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 mt-8 font-mono text-xs text-[#111110] uppercase tracking-wider border-b border-[#BEFF62] pb-0.5 hover:gap-3 transition-all duration-200"
-          >
-            All our links <ArrowRight size={12} />
-          </a>
         </FadeIn>
 
-        {/* Right — pillars */}
+        {/* Right: Interactive Peer Loop Stepper */}
         <FadeIn delay={0.15}>
-          <div className="flex flex-col divide-y divide-black/[0.06]">
-            {pillars.map((p) => (
-              <div key={p.id} className="py-7 first:pt-0 last:pb-0 group cursor-default">
-                <div className="flex items-start gap-5">
-                  <div className="mt-0.5 w-7 h-7 rounded-sm bg-[#BEFF62] flex items-center justify-center shrink-0">
-                    <span className="font-mono text-[9px] font-medium text-[#111110]">{p.id}</span>
+          <PeerLearningLoop />
+        </FadeIn>
+      </div>
+
+      {/* Middle: 3 Interactive Pillar Bento Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 mt-16 sm:mt-20">
+        {pillars.map((p, idx) => {
+          const Icon = PILLAR_ICONS[idx] || Users
+          return (
+            <FadeIn key={p.id} delay={0.1 + idx * 0.08}>
+              <div className="group relative bg-white rounded-2xl border border-black/[0.08] p-7 sm:p-8 flex flex-col justify-between h-full transition-all duration-300 hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.07)] hover:-translate-y-1.5 overflow-hidden">
+                {/* Top accent line on hover */}
+                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Background watermark number */}
+                <span
+                  className="font-mono text-7xl font-bold text-black/[0.03] absolute right-4 top-4 select-none pointer-events-none group-hover:text-black/[0.06] transition-colors"
+                  aria-hidden="true"
+                >
+                  {p.id}
+                </span>
+
+                <div>
+                  {/* Top row: Icon + Monospace badge */}
+                  <div className="flex items-center justify-between">
+                    <div className="w-11 h-11 rounded-xl bg-[#FAFAF8] border border-black/[0.07] flex items-center justify-center text-[#111110] group-hover:bg-[#BEFF62] group-hover:border-[#BEFF62] group-hover:scale-105 transition-all duration-300 shadow-sm">
+                      <Icon size={20} className="transition-transform duration-300 group-hover:rotate-[-6deg]" />
+                    </div>
+                    <span className="font-mono text-[10px] tracking-widest text-[#9A9A95] uppercase font-medium bg-[#FAFAF8] px-2.5 py-1 rounded-full border border-black/[0.05]">
+                      {p.badge}
+                    </span>
                   </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-[#111110] mb-2">{p.title}</h3>
-                    <p className="text-sm text-[#3A3A37]/50 leading-relaxed">{p.body}</p>
+
+                  {/* Title & Tagline */}
+                  <h3 className="font-serif text-2xl sm:text-[1.65rem] text-[#111110] font-normal leading-snug tracking-tight mt-6">
+                    {p.title}
+                  </h3>
+                  <p className="font-sans text-xs text-[#111110]/50 font-medium mt-1 mb-3.5">
+                    {p.tagline}
+                  </p>
+
+                  {/* Body */}
+                  <p className="font-sans text-sm text-[#3A3A37]/75 leading-relaxed">
+                    {p.body}
+                  </p>
+                </div>
+
+                {/* Card bottom: tags & metric */}
+                <div className="mt-8 pt-5 border-t border-black/[0.06]">
+                  <div className="flex flex-wrap gap-1.5 mb-3.5">
+                    {p.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="font-mono text-[9px] tracking-wider text-[#111110]/65 bg-[#FAFAF8] border border-black/[0.06] rounded px-2 py-0.5 uppercase group-hover:border-black/15 transition-colors"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#111110]/55">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/15 shrink-0" />
+                    <span>{p.metric}</span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </FadeIn>
+            </FadeIn>
+          )
+        })}
       </div>
+
+      {/* Bottom: Manifesto Ethos Banner with IEDC-style Dual-Layer Tilted Frame */}
+      <FadeIn delay={0.2} className="mt-16 sm:mt-20">
+        <div className="relative group cursor-default">
+          {/* Solid Accent Backdrop Plate - calibrated tilt in Electric Lime */}
+          <div
+            className="absolute inset-0 transition-all duration-300 transform rounded-3xl bg-[#BEFF62] shadow-sm rotate-[0.35deg] sm:rotate-[0.6deg] group-hover:rotate-[0.6deg] sm:group-hover:rotate-[1deg] group-hover:shadow-[0_12px_32px_rgba(190,255,98,0.35)] pointer-events-none"
+            aria-hidden="true"
+          />
+
+          {/* Solid Foreground Card in Deep Ink */}
+          <div className="relative rounded-3xl p-8 sm:p-12 bg-[#111110] border border-black/15 transition-all duration-300 transform -rotate-[0.35deg] sm:-rotate-[0.6deg] group-hover:-rotate-[0.6deg] sm:group-hover:-rotate-[1deg] shadow-xl overflow-hidden">
+            {/* Subtle background ambient light */}
+            <div
+              className="absolute -right-24 -top-24 w-96 h-96 rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(190,255,98,0.12) 0%, transparent 70%)' }}
+              aria-hidden="true"
+            />
+
+            <div className="relative z-10 grid lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12 items-center">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-4 h-px bg-[#BEFF62]" />
+                  <span className="font-mono text-[10px] tracking-[0.25em] text-[#BEFF62] uppercase font-bold">
+                    The Campus Ethos
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-normal leading-[1.15] tracking-tight">
+                  "The syllabus teaches you what worked yesterday.{' '}
+                  <span className="italic text-[#BEFF62]">Shipping in public</span> teaches you what works today."
+                </h3>
+
+                <p className="mt-4 text-sm sm:text-[15px] text-white/60 leading-relaxed max-w-xl">
+                  We don’t wait for semester inductions or final-year capstones. Every week at CEC, students build projects, submit verifiable proof of work, and learn side-by-side without gatekeepers.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 mt-6">
+                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/70 bg-white/[0.06] border border-white/10 px-3 py-1 rounded-full">
+                    <CheckCircle2 size={12} className="text-[#BEFF62]" />
+                    <span>Zero Textbook Theory</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/70 bg-white/[0.06] border border-white/10 px-3 py-1 rounded-full">
+                    <CheckCircle2 size={12} className="text-[#BEFF62]" />
+                    <span>100% Peer Accountability</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/70 bg-white/[0.06] border border-white/10 px-3 py-1 rounded-full">
+                    <CheckCircle2 size={12} className="text-[#BEFF62]" />
+                    <span>Statewide Verified Karma</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons with the hero shimmer effect */}
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3.5 lg:items-end justify-center">
+                <a
+                  href={chapter.linktree}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/btn relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-full bg-[#BEFF62] text-[#111110] font-sans font-medium text-xs sm:text-sm tracking-wide shadow-sm hover:shadow-lg active:scale-[0.98] transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out w-full sm:w-auto"
+                >
+                  <span className="relative z-10 flex items-center gap-2 font-semibold">
+                    Explore All Chapter Links
+                  </span>
+                  <ArrowRight className="relative z-10 w-4 h-4 text-[#111110] transition-transform duration-300 ease-out group-hover/btn:translate-x-1.5" />
+                </a>
+
+                <a
+                  href={chapter.joinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group/join relative inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.1] text-white/80 hover:text-white border border-white/15 font-sans font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 cursor-pointer w-full sm:w-auto"
+                >
+                  <span className="flex items-center gap-1.5">
+                    Join µLearn Platform
+                  </span>
+                  <ExternalLink className="w-3.5 h-3.5 text-white/50 group-hover/join:text-[#BEFF62] transition-colors" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
     </div>
   </section>
 )

@@ -61,19 +61,58 @@ export const events = [
 
 export const pillars = [
   {
-    id:    '01',
-    title: 'Learning Circles',
-    body:  'Self-directed peer groups of 4–6 members who meet weekly, tackle a shared topic, and build together. No instructor, just people who actually care.',
+    id:      '01',
+    badge:   'MICRO-COHORTS',
+    title:   'Learning Circles',
+    tagline: 'Self-governed squads, zero lectures',
+    body:    'Self-directed peer groups of 4–6 members meeting weekly to crack a shared topic and ship together. No professor, no syllabus constraints — just pure peer accountability and mutual progress.',
+    tags:    ['Weekly Standups', 'Shared Roadmaps', 'Peer Feedback'],
+    metric:  '4–6 learners per circle',
   },
   {
-    id:    '02',
-    title: 'Proof of Work',
-    body:  'No certificates. You earn karma by shipping real work publicly — code, designs, writing. Anything verifiable counts. The leaderboard is public.',
+    id:      '02',
+    badge:   'VERIFIABLE REPUTATION',
+    title:   'Proof of Work',
+    tagline: 'Karma points over paper diplomas',
+    body:    'We don’t believe in paper participation certificates. You earn karma by shipping publicly verifiable output — open-source commits, design prototypes, and technical teardowns reviewed by the statewide community.',
+    tags:    ['GitHub PRs', 'Karma Leaderboard', 'Public Demos'],
+    metric:  '100% public & verifiable',
   },
   {
-    id:    '03',
-    title: 'Open Community',
-    body:  'No gatekeeping. First years to final years, all domains, all skill levels. Curiosity is the only entry requirement.',
+    id:      '03',
+    badge:   'CAMPUS GUILD',
+    title:   'Radical Openness',
+    tagline: 'Zero gatekeeping, full agency',
+    body:    'Curiosity is the only prerequisite. First-year novices build right beside final-year seniors. You can initiate a circle, host an open-source sprint, or challenge senior members on Day 1.',
+    tags:    ['Cross-Batch Guilds', 'Inter-College Network', 'All Domains'],
+    metric:  'Open to all years & branches',
+  },
+]
+
+export const loopSteps = [
+  {
+    step: '01',
+    label: 'Assemble',
+    tagline: 'Find your circle',
+    desc: 'Pick an interest track or gather 3–5 peers who share your hunger to learn and build.',
+  },
+  {
+    step: '02',
+    label: 'Build',
+    tagline: 'Tackle real roadmaps',
+    desc: 'Follow curated industry roadmaps, write production code, and debug together every week.',
+  },
+  {
+    step: '03',
+    label: 'Ship',
+    tagline: 'Publish in public',
+    desc: 'Deploy live projects, push GitHub commits, and share public progress with the community.',
+  },
+  {
+    step: '04',
+    label: 'Earn',
+    tagline: 'Accumulate Karma',
+    desc: 'Get peer-reviewed, claim verified Karma points, and unlock internships and opportunities.',
   },
 ]
 
