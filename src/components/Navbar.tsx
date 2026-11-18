@@ -140,8 +140,10 @@ export const Navbar: React.FC = () => {
                   size="sm"
                   href={NAV_CONFIG.ctaHref}
                   onClick={(e) => handleNavClick(e, NAV_CONFIG.ctaHref)}
-                  rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}
-                  className="!rounded-full !bg-[#111110] !text-white hover:!bg-[#2a2a28] !shadow-none !px-4 !py-2 !text-xs font-mono uppercase tracking-wider font-semibold whitespace-nowrap"
+                  rightIcon={
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  }
+                  className="group !rounded-full !bg-[#111110] !text-white hover:!bg-[#2a2a28] hover:shadow-[0_8px_32px_-6px_rgba(0,0,0,0.3)] transition-all duration-200 !px-4.5 !py-2 !text-xs font-mono uppercase tracking-wider font-semibold whitespace-nowrap"
                 >
                   {NAV_CONFIG.ctaText}
                 </Button>
@@ -225,8 +227,10 @@ export const Navbar: React.FC = () => {
                       size="md"
                       href={NAV_CONFIG.ctaHref}
                       onClick={(e) => handleNavClick(e, NAV_CONFIG.ctaHref)}
-                      className="w-full justify-center !rounded-xl !bg-[#111110] !text-white"
-                      rightIcon={<ArrowUpRight className="w-4 h-4" />}
+                      className="group w-full justify-center !rounded-xl !bg-[#111110] !text-white hover:!bg-[#2a2a28] hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.25)] transition-all duration-200"
+                      rightIcon={
+                        <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      }
                     >
                       {NAV_CONFIG.ctaText}
                     </Button>

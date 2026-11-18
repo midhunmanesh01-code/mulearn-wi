@@ -4,6 +4,7 @@ import { motion, useInView } from 'motion/react'
 import { ArrowUpRight, ExternalLink, ArrowRight, Zap, Users, Calendar, Star } from 'lucide-react'
 import { chapter, stats, circles, events, pillars, karmaSteps, communityMoments } from '@/config/content'
 import { Navbar } from '@/components/Navbar'
+import { FlickerNumber } from '@/components/FlickerNumber'
 
 // ─── Scroll-reveal wrapper ─────────────────────────────────────────────────────
 const FadeIn: React.FC<{
@@ -48,7 +49,7 @@ const Hero: React.FC = () => (
       aria-hidden="true"
     />
 
-    <div className="relative mx-auto max-w-6xl px-6 sm:px-10 pt-36 pb-20 min-h-[100dvh] flex flex-col justify-between">
+    <div className="relative mx-auto max-w-6xl px-6 sm:px-10 pt-28 sm:pt-32 pb-16 min-h-[100dvh] flex flex-col justify-between">
       <div>
         {/* Eyebrow */}
         <motion.div
@@ -129,17 +130,23 @@ const Hero: React.FC = () => (
 
       {/* Stats — anchored to bottom */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.9 }}
-        className="mt-24"
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="mt-16 sm:mt-20"
       >
         <div className="border-t border-black/[0.07] mb-7" />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-6">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <p className="font-mono text-[2.5rem] font-medium text-[#111110] tabular-nums leading-none">{s.value}</p>
-              <p className="font-mono text-[9px] tracking-widest text-[#9AE637] uppercase mt-2.5">{s.label}</p>
+          {stats.map((s, idx) => (
+            <div key={s.label} className="group">
+              <div>
+                <FlickerNumber
+                  value={s.value}
+                  delay={idx * 50}
+                  className="text-[2.5rem] font-medium leading-none"
+                />
+              </div>
+              <p className="font-mono text-[9px] tracking-widest text-[#9AE637] uppercase mt-2.5 transition-colors group-hover:text-[#111110]">{s.label}</p>
               <p className="text-xs text-[#9A9A95] mt-0.5">{s.sub}</p>
             </div>
           ))}
@@ -297,7 +304,7 @@ const Karma: React.FC = () => (
             <div className="w-10 h-10 rounded-full bg-[#BEFF62] flex items-center justify-center">
               <Zap size={18} className="text-[#111110]" />
             </div>
-            <span className="font-mono text-5xl font-medium text-[#111110] tabular-nums">2.4K</span>
+            <FlickerNumber value="2.4K" delay={200} className="text-5xl font-medium leading-none" />
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className={`w-2 h-2 rounded-full ${i < 4 ? 'bg-[#BEFF62]' : 'bg-[#E8E8E4]'}`} />
