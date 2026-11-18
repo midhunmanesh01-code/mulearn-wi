@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import { motion, useInView } from 'motion/react'
-import { ArrowUpRight, ExternalLink, ArrowRight, Zap, Users, Calendar, Star } from 'lucide-react'
+import { ExternalLink, ArrowRight, Zap, Users, Calendar, Star } from 'lucide-react'
 import { chapter, stats, circles, events, pillars, karmaSteps, communityMoments } from '@/config/content'
 import { Navbar } from '@/components/Navbar'
 import { FlickerNumber } from '@/components/FlickerNumber'
@@ -169,21 +169,26 @@ const Hero: React.FC = () => (
           <p className="max-w-xs text-sm text-[#3A3A37]/60 leading-relaxed">
             {chapter.tagline}
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3.5">
             <a
               href={chapter.joinUrl}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-2 rounded-full bg-[#111110] text-white px-7 py-3.5 text-sm font-semibold transition-all duration-200 hover:bg-[#2a2a28] hover:shadow-[0_8px_32px_-6px_rgba(0,0,0,0.3)] font-mono uppercase tracking-wider"
+              className="group relative overflow-hidden flex items-center gap-2.5 rounded-full bg-[#111110] text-white px-7 py-3.5 text-sm font-bold font-mono uppercase tracking-wider shadow-[0_4px_20px_-4px_rgba(0,0,0,0.25)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.45)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent before:transition-transform before:duration-700 before:ease-out"
             >
-              Join the chapter
-              <ArrowUpRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <span className="relative z-10 inline-block transition-transform duration-300 group-hover:scale-[1.02]">
+                Join the chapter
+              </span>
+              <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
             </a>
             <a
               href="#circles"
-              className="flex items-center gap-2 rounded-full border border-black/[0.1] bg-white px-7 py-3.5 text-sm font-mono uppercase tracking-wider text-[#3A3A37]/60 transition-all duration-200 hover:border-black/20 hover:text-[#111110]"
+              className="group relative overflow-hidden flex items-center gap-2.5 rounded-full border border-black/[0.12] hover:border-[#111110] bg-white text-[#111110] px-7 py-3.5 text-sm font-bold font-mono uppercase tracking-wider shadow-[0_2px_12px_-3px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_24px_-4px_rgba(0,0,0,0.12)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-[#BEFF62]/35 before:to-transparent before:transition-transform before:duration-700 before:ease-out"
             >
-              Explore circles
+              <span className="relative z-10 inline-block transition-transform duration-300 group-hover:scale-[1.02]">
+                Explore circles
+              </span>
+              <ArrowRight className="relative z-10 w-4 h-4 text-[#9A9A95] transition-all duration-300 ease-out group-hover:translate-x-1.5 group-hover:text-[#111110]" />
             </a>
           </div>
         </motion.div>
@@ -229,18 +234,31 @@ const Hero: React.FC = () => (
 
 // ─── Marquee ticker ────────────────────────────────────────────────────────────
 const TICKER = [
-  'PEER LEARNING', 'BUILD IN PUBLIC', 'OPEN SOURCE', 'KARMA SYSTEM',
-  'NO HIERARCHY', 'REAL PROJECTS', 'EARN BY DOING', 'CEC CAMPUS',
-  'LEARNING CIRCLES', 'PROOF OF WORK', 'FOCES CEC', 'IEDC BOOTCAMP',
+  'PEER-TO-PEER LEARNING',
+  'LEARNING CIRCLES',
+  'KARMA POINTS SYSTEM',
+  'PROOF OF WORK',
+  'BUILD IN PUBLIC',
+  'INTEREST GROUPS',
+  'OPEN SOURCE SPRINTS',
+  'MICRO COMMUNITIES',
+  'NO LECTURES NO HIERARCHY',
+  'EARN BY SHIPPING',
+  'GTECH µLEARN ECOSYSTEM',
+  'PORTFOLIO REVIEWS',
 ]
 const Marquee: React.FC = () => {
   const doubled = [...TICKER, ...TICKER]
   return (
-    <div className="border-y border-black/[0.07] overflow-hidden py-3.5 select-none bg-white">
+    <div className="border-y border-black/[0.08] overflow-hidden py-4 select-none bg-white">
       <div className="marquee-track">
         {doubled.map((item, i) => (
-          <span key={i} className="font-mono text-[10px] tracking-[0.18em] text-[#111110]/20 uppercase px-5 whitespace-nowrap">
-            {item}<span className="ml-5 text-[#BEFF62]">·</span>
+          <span
+            key={i}
+            className="font-mono text-xs font-medium tracking-[0.16em] text-[#111110]/75 uppercase px-6 whitespace-nowrap flex items-center"
+          >
+            {item}
+            <span className="ml-6 inline-block w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/10 shrink-0" />
           </span>
         ))}
       </div>
