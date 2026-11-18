@@ -113,6 +113,27 @@ body { background: #FAFAF8; }
   text-decoration-thickness: 2px;
 }
 
+/* ── Loader text shimmer ──────────────────────────────────────────────────── */
+@keyframes loader-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.loader-text-shimmer {
+  background: linear-gradient(
+    110deg,
+    #ffffff 20%,
+    #e8e8e4 35%,
+    #e9ffc2 48%,
+    #beff62 55%,
+    #ffffff 75%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: loader-shimmer 2.2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: .01ms !important;
