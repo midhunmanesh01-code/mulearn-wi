@@ -378,18 +378,18 @@ const PeerLearningLoop: React.FC = () => {
       </div>
 
       {/* Dynamic Active Step Detail Card */}
-      <div className="mt-4 pt-4 border-t border-black/[0.06] flex items-center justify-between gap-4">
-        <div>
-          <span className="font-mono text-[10px] text-[#9A9A95] tracking-wider uppercase">
-            Stage · {active.tagline}
+      <div className="mt-3 pt-3 border-t border-black/[0.06] flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] text-[#9A9A95] uppercase tracking-wider">
+            0{activeStep + 1} //
           </span>
-          <p className="font-sans text-xs sm:text-sm text-[#111110]/80 mt-0.5 leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-[#111110]/80 font-medium">
             {active.desc}
           </p>
         </div>
         <div className="shrink-0 hidden sm:block">
-          <span className="font-mono text-[9px] text-[#111110] font-medium px-2 py-1 rounded bg-[#BEFF62]/35 border border-[#BEFF62]/60 uppercase">
-            Peer Engine
+          <span className="font-mono text-[9px] text-[#111110] font-medium px-2 py-0.5 rounded bg-[#BEFF62]/40 border border-[#BEFF62]/60 uppercase">
+            {active.tagline}
           </span>
         </div>
       </div>
@@ -399,24 +399,21 @@ const PeerLearningLoop: React.FC = () => {
 
 const Community: React.FC = () => (
   <section id="about" className="bg-[#FAFAF8] border-b border-black/[0.06]">
-    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-24 sm:py-32">
+    <div className="mx-auto max-w-6xl px-6 sm:px-10 py-20 sm:py-28">
       {/* Top Header Grid */}
-      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-start">
+      <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-14 items-start">
         <FadeIn>
           <Label>Manifesto · Why µLearn CEC</Label>
           <h2 className="font-serif text-[clamp(2.4rem,5.5vw,4.2rem)] leading-[1.05] text-[#111110] tracking-tight">
             A community<br />
             <span className="italic text-[#111110]/35 font-normal">that compounds.</span>
           </h2>
-          <div className="mt-5 flex gap-2">
+          <div className="mt-4 flex gap-2">
             <div className="w-8 h-1 bg-[#BEFF62] rounded-full" />
             <div className="w-3 h-1 bg-[#BEFF62]/30 rounded-full" />
           </div>
-          <p className="mt-7 text-sm sm:text-[15px] text-[#3A3A37]/75 leading-[1.8] max-w-xl">
-            GTech µLearn is Kerala's largest peer-learning movement — built on the premise that genuine engineering competence isn’t created by sitting through slides, but by building real things with peers who care.
-          </p>
-          <p className="mt-3.5 text-sm sm:text-[15px] text-[#3A3A37]/75 leading-[1.8] max-w-xl">
-            The CEC chapter connects makers across all years and domains through learning circles, open-source sprints, and a statewide karma system that rewards verifiable proof of work.
+          <p className="mt-5 text-sm sm:text-base text-[#111110]/75 leading-relaxed max-w-md">
+            No lecture slides. No artificial attendance. Just small cohorts building real software and earning verifiable proof of work.
           </p>
         </FadeIn>
 
@@ -427,18 +424,18 @@ const Community: React.FC = () => (
       </div>
 
       {/* Middle: 3 Interactive Pillar Bento Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7 mt-16 sm:mt-20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mt-14 sm:mt-16">
         {pillars.map((p, idx) => {
           const Icon = PILLAR_ICONS[idx] || Users
           return (
             <FadeIn key={p.id} delay={0.1 + idx * 0.08}>
-              <div className="group relative bg-white rounded-2xl border border-black/[0.08] p-7 sm:p-8 flex flex-col justify-between h-full transition-all duration-300 hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.07)] hover:-translate-y-1.5 overflow-hidden">
+              <div className="group relative bg-white rounded-2xl border border-black/[0.08] p-6 sm:p-7 flex flex-col justify-between h-full transition-all duration-300 hover:shadow-[0_12px_32px_-6px_rgba(0,0,0,0.06)] hover:-translate-y-1 overflow-hidden">
                 {/* Top accent line on hover */}
-                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#BEFF62] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 {/* Background watermark number */}
                 <span
-                  className="font-mono text-7xl font-bold text-black/[0.03] absolute right-4 top-4 select-none pointer-events-none group-hover:text-black/[0.06] transition-colors"
+                  className="font-mono text-6xl font-bold text-black/[0.025] absolute right-4 top-3 select-none pointer-events-none group-hover:text-black/[0.05] transition-colors"
                   aria-hidden="true"
                 >
                   {p.id}
@@ -447,43 +444,40 @@ const Community: React.FC = () => (
                 <div>
                   {/* Top row: Icon + Monospace badge */}
                   <div className="flex items-center justify-between">
-                    <div className="w-11 h-11 rounded-xl bg-[#FAFAF8] border border-black/[0.07] flex items-center justify-center text-[#111110] group-hover:bg-[#BEFF62] group-hover:border-[#BEFF62] group-hover:scale-105 transition-all duration-300 shadow-sm">
-                      <Icon size={20} className="transition-transform duration-300 group-hover:rotate-[-6deg]" />
+                    <div className="w-10 h-10 rounded-xl bg-[#FAFAF8] border border-black/[0.07] flex items-center justify-center text-[#111110] group-hover:bg-[#BEFF62] group-hover:border-[#BEFF62] group-hover:scale-105 transition-all duration-300 shadow-sm">
+                      <Icon size={18} className="transition-transform duration-300 group-hover:rotate-[-6deg]" />
                     </div>
-                    <span className="font-mono text-[10px] tracking-widest text-[#9A9A95] uppercase font-medium bg-[#FAFAF8] px-2.5 py-1 rounded-full border border-black/[0.05]">
+                    <span className="font-mono text-[9px] tracking-widest text-[#9A9A95] uppercase font-semibold bg-[#FAFAF8] px-2 py-0.5 rounded-full border border-black/[0.05]">
                       {p.badge}
                     </span>
                   </div>
 
-                  {/* Title & Tagline */}
-                  <h3 className="font-serif text-2xl sm:text-[1.65rem] text-[#111110] font-normal leading-snug tracking-tight mt-6">
+                  {/* Title */}
+                  <h3 className="font-serif text-2xl text-[#111110] font-normal leading-snug tracking-tight mt-5">
                     {p.title}
                   </h3>
-                  <p className="font-sans text-xs text-[#111110]/50 font-medium mt-1 mb-3.5">
-                    {p.tagline}
-                  </p>
 
-                  {/* Body */}
-                  <p className="font-sans text-sm text-[#3A3A37]/75 leading-relaxed">
+                  {/* Body - short & clean */}
+                  <p className="font-sans text-sm text-[#3A3A37]/70 leading-relaxed mt-2.5">
                     {p.body}
                   </p>
                 </div>
 
                 {/* Card bottom: tags & metric */}
-                <div className="mt-8 pt-5 border-t border-black/[0.06]">
-                  <div className="flex flex-wrap gap-1.5 mb-3.5">
+                <div className="mt-6 pt-4 border-t border-black/[0.06] flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#111110]/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/15 shrink-0" />
+                    <span>{p.metric}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
                     {p.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[9px] tracking-wider text-[#111110]/65 bg-[#FAFAF8] border border-black/[0.06] rounded px-2 py-0.5 uppercase group-hover:border-black/15 transition-colors"
+                        className="font-mono text-[9px] tracking-wider text-[#111110]/55 bg-[#FAFAF8] border border-black/[0.06] rounded px-1.5 py-0.5 uppercase"
                       >
                         {tag}
                       </span>
                     ))}
-                  </div>
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#111110]/55">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#BEFF62] border border-black/15 shrink-0" />
-                    <span>{p.metric}</span>
                   </div>
                 </div>
               </div>
@@ -493,16 +487,16 @@ const Community: React.FC = () => (
       </div>
 
       {/* Bottom: Manifesto Ethos Banner with IEDC-style Dual-Layer Tilted Frame */}
-      <FadeIn delay={0.2} className="mt-16 sm:mt-20">
+      <FadeIn delay={0.2} className="mt-14 sm:mt-16">
         <div className="relative group cursor-default">
           {/* Solid Accent Backdrop Plate - calibrated tilt in Electric Lime */}
           <div
-            className="absolute inset-0 transition-all duration-300 transform rounded-3xl bg-[#BEFF62] shadow-sm rotate-[0.35deg] sm:rotate-[0.6deg] group-hover:rotate-[0.6deg] sm:group-hover:rotate-[1deg] group-hover:shadow-[0_12px_32px_rgba(190,255,98,0.35)] pointer-events-none"
+            className="absolute inset-0 transition-all duration-300 transform rounded-2xl sm:rounded-3xl bg-[#BEFF62] shadow-sm rotate-[0.3deg] sm:rotate-[0.5deg] group-hover:rotate-[0.5deg] sm:group-hover:rotate-[0.8deg] group-hover:shadow-[0_12px_28px_rgba(190,255,98,0.3)] pointer-events-none"
             aria-hidden="true"
           />
 
           {/* Solid Foreground Card in Deep Ink */}
-          <div className="relative rounded-3xl p-8 sm:p-12 bg-[#111110] border border-black/15 transition-all duration-300 transform -rotate-[0.35deg] sm:-rotate-[0.6deg] group-hover:-rotate-[0.6deg] sm:group-hover:-rotate-[1deg] shadow-xl overflow-hidden">
+          <div className="relative rounded-2xl sm:rounded-3xl p-7 sm:p-10 bg-[#111110] border border-black/15 transition-all duration-300 transform -rotate-[0.3deg] sm:-rotate-[0.5deg] group-hover:-rotate-[0.5deg] sm:group-hover:-rotate-[0.8deg] shadow-xl overflow-hidden">
             {/* Subtle background ambient light */}
             <div
               className="absolute -right-24 -top-24 w-96 h-96 rounded-full pointer-events-none"
@@ -510,50 +504,50 @@ const Community: React.FC = () => (
               aria-hidden="true"
             />
 
-            <div className="relative z-10 grid lg:grid-cols-[1.3fr_1fr] gap-8 lg:gap-12 items-center">
+            <div className="relative z-10 grid lg:grid-cols-[1.3fr_1fr] gap-7 lg:gap-10 items-center">
               <div>
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 mb-3">
                   <span className="w-4 h-px bg-[#BEFF62]" />
                   <span className="font-mono text-[10px] tracking-[0.25em] text-[#BEFF62] uppercase font-bold">
                     The Campus Ethos
                   </span>
                 </div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-normal leading-[1.15] tracking-tight">
+                <h3 className="font-serif text-2xl sm:text-3xl lg:text-[2.2rem] text-white font-normal leading-[1.2] tracking-tight">
                   "The syllabus teaches you what worked yesterday.{' '}
                   <span className="italic text-[#BEFF62]">Shipping in public</span> teaches you what works today."
                 </h3>
 
-                <p className="mt-4 text-sm sm:text-[15px] text-white/60 leading-relaxed max-w-xl">
-                  We don’t wait for semester inductions or final-year capstones. Every week at CEC, students build projects, submit verifiable proof of work, and learn side-by-side without gatekeepers.
+                <p className="mt-3.5 text-sm text-white/60 leading-relaxed max-w-lg">
+                  No waiting for graduation. Jump into an active circle or initiate your own build sprint at CEC.
                 </p>
 
-                <div className="flex flex-wrap items-center gap-3 mt-6">
-                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/70 bg-white/[0.06] border border-white/10 px-3 py-1 rounded-full">
-                    <CheckCircle2 size={12} className="text-[#BEFF62]" />
-                    <span>Zero Textbook Theory</span>
+                <div className="flex flex-wrap items-center gap-2 mt-5">
+                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] text-white/70 bg-white/[0.06] border border-white/10 px-2.5 py-0.5 rounded-full">
+                    <CheckCircle2 size={11} className="text-[#BEFF62]" />
+                    <span>Zero Theory</span>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/70 bg-white/[0.06] border border-white/10 px-3 py-1 rounded-full">
-                    <CheckCircle2 size={12} className="text-[#BEFF62]" />
-                    <span>100% Peer Accountability</span>
+                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] text-white/70 bg-white/[0.06] border border-white/10 px-2.5 py-0.5 rounded-full">
+                    <CheckCircle2 size={11} className="text-[#BEFF62]" />
+                    <span>Peer Led</span>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-white/70 bg-white/[0.06] border border-white/10 px-3 py-1 rounded-full">
-                    <CheckCircle2 size={12} className="text-[#BEFF62]" />
-                    <span>Statewide Verified Karma</span>
+                  <div className="inline-flex items-center gap-1.5 font-mono text-[10px] text-white/70 bg-white/[0.06] border border-white/10 px-2.5 py-0.5 rounded-full">
+                    <CheckCircle2 size={11} className="text-[#BEFF62]" />
+                    <span>Verified Karma</span>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons with the hero shimmer effect */}
-              <div className="flex flex-col sm:flex-row lg:flex-col gap-3.5 lg:items-end justify-center">
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end justify-center">
                 <a
                   href={chapter.linktree}
                   target="_blank"
                   rel="noreferrer"
-                  className="group/btn relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 rounded-full bg-[#BEFF62] text-[#111110] font-sans font-medium text-xs sm:text-sm tracking-wide shadow-sm hover:shadow-lg active:scale-[0.98] transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out w-full sm:w-auto"
+                  className="group/btn relative inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 rounded-full bg-[#BEFF62] text-[#111110] font-sans font-medium text-xs sm:text-sm tracking-wide shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-300 overflow-hidden cursor-pointer before:absolute before:inset-0 before:-translate-x-full hover:before:translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent before:transition-transform before:duration-700 before:ease-in-out w-full sm:w-auto"
                 >
                   <span className="relative z-10 flex items-center gap-2 font-semibold">
-                    Explore All Chapter Links
+                    Explore All Links
                   </span>
                   <ArrowRight className="relative z-10 w-4 h-4 text-[#111110] transition-transform duration-300 ease-out group-hover/btn:translate-x-1.5" />
                 </a>
@@ -562,7 +556,7 @@ const Community: React.FC = () => (
                   href={chapter.joinUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group/join relative inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.1] text-white/80 hover:text-white border border-white/15 font-sans font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 cursor-pointer w-full sm:w-auto"
+                  className="group/join relative inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 rounded-full bg-white/[0.06] hover:bg-white/[0.1] text-white/80 hover:text-white border border-white/15 font-sans font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 cursor-pointer w-full sm:w-auto"
                 >
                   <span className="flex items-center gap-1.5">
                     Join µLearn Platform
